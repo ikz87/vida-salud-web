@@ -95,12 +95,12 @@ function App() {
                 : "border-pastel-lavender bg-pastel-lavender-bg text-ink hover:bg-pastel-lavender/30"
                 }`}
             >
+              {c.nav.toggle}
               <img
                 src={flagUrls[targetLang]}
                 className="w-4 h-4 rounded-full object-cover"
                 alt="flag"
               />
-              {c.nav.toggle}
             </motion.button>
             <button
               onClick={() => setMenuOpen(true)}

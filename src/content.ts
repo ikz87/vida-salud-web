@@ -60,7 +60,7 @@ export const content: Record<Lang, Content> = {
       backHome: "Back to Home",
     },
     nav: {
-      toggle: "ES",
+      toggle: "Ver en",
       mission: "Mission",
       structure: "Structure",
       sessions: "Sessions",
@@ -240,7 +240,7 @@ export const content: Record<Lang, Content> = {
       backHome: "Volver al Inicio",
     },
     nav: {
-      toggle: "EN",
+      toggle: "View in",
       mission: "Misi\u00f3n",
       structure: "Estructura",
       sessions: "Charlas",
