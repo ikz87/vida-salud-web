@@ -18,7 +18,10 @@ import ScrollToTop from "./components/ScrollToTop";
 import { flagUrls } from "./constants";
 
 function App() {
-  const [lang, setLang] = useState<Lang>("en");
+  const [lang, setLang] = useState<Lang>(() => {
+    const browserLang = navigator.language.split('-')[0];
+    return browserLang === 'es' ? 'es' : 'en';
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const c = content[lang];
