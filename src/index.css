@@ -1,0 +1,61 @@
+/* index.css */
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap");
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-heading: "Outfit", system-ui, sans-serif;
+
+  --color-cream: #faf9f6;
+  --color-cream-warm: #f5f0eb;
+  --color-ink: #1a1a2e;
+  --color-ink-light: #2d2d44;
+  --color-ink-muted: #5a5a78;
+  --color-ink-subtle: #8888a0;
+
+  --color-pastel-green: #a8d8b9;
+  --color-pastel-green-bg: #e8f5ec;
+  --color-pastel-blue: #a0c4e8;
+  --color-pastel-blue-bg: #e3eef8;
+  --color-pastel-lavender: #c4b5e0;
+  --color-pastel-lavender-bg: #ede7f6;
+  --color-pastel-peach: #f0c4a8;
+  --color-pastel-peach-bg: #fef0e5;
+  --color-pastel-rose: #e8a0b0;
+  --color-pastel-rose-bg: #fce4ec;
+  --color-pastel-sky: #90caf9;
+  --color-pastel-sky-bg: #e1f0fd;
+  --color-pastel-mint: #80cbc4;
+  --color-pastel-mint-bg: #dff5f2;
+  --color-pastel-amber: #ffd180;
+  --color-pastel-amber-bg: #fff8e1;
+
+  --color-dark-section: #1a1a2e;
+  --color-dark-section-alt: #232340;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+}
+
+html {
+  scroll-behavior: smooth;
+}
