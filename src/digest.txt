@@ -16,13 +16,11 @@ Directory structure:
 ================================================
 FILE: App.tsx
 ================================================
+// App.tsx
 import { useState } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { content, type Lang } from "./content";
-import {
-  motion,
-  AnimatePresence,
-} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Leaf,
   Menu,
@@ -36,7 +34,10 @@ import ScrollToTop from "./components/ScrollToTop";
 import { flagUrls } from "./constants";
 
 function App() {
-  const [lang, setLang] = useState<Lang>("en");
+  const [lang, setLang] = useState<Lang>(() => {
+    const browserLang = navigator.language.split("-")[0];
+    return browserLang === "es" ? "es" : "en";
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const c = content[lang];
@@ -47,25 +48,27 @@ function App() {
   const navLinks = isGallery
     ? [{ label: "Home", to: "/", icon: ArrowLeft }]
     : [
-      { href: "#mission", label: c.nav.mission },
-      { href: "#structure", label: c.nav.structure },
-      { href: "#sessions", label: c.nav.sessions },
-      { to: "/gallery", label: "Gallery", icon: ImageIcon },
-    ];
+        { href: "#mission", label: c.nav.mission },
+        { href: "#structure", label: c.nav.structure },
+        { href: "#sessions", label: c.nav.sessions },
+        { to: "/gallery", label: "Gallery", icon: ImageIcon },
+      ];
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-500 ${isGallery ? "bg-dark-section" : "bg-cream"
-        }`}
+      className={`min-h-screen transition-colors duration-500 ${
+        isGallery ? "bg-dark-section" : "bg-cream"
+      }`}
     >
       <ScrollToTop />
 
       {/* ───── NAVBAR ───── */}
       <nav
-        className={`sticky top-0 z-50 backdrop-blur-lg border-b transition-colors duration-300 ${isGallery
-          ? "bg-dark-section/80 border-white/10"
-          : "bg-cream/80 border-gray-200/60"
-          }`}
+        className={`sticky top-0 z-50 backdrop-blur-lg border-b transition-colors duration-300 ${
+          isGallery
+            ? "bg-dark-section/80 border-white/10"
+            : "bg-cream/80 border-warm-stone/40"
+        }`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
           <Link
@@ -73,21 +76,30 @@ function App() {
             className="flex items-center gap-2 font-heading font-bold text-lg cursor-pointer"
           >
             <Leaf
-              className={`w-6 h-6 ${isGallery ? "text-white" : "text-pastel-green"}`}
+              className={`w-6 h-6 ${
+                isGallery ? "text-sage-light" : "text-sage"
+              }`}
             />
-            <span className={isGallery ? "text-white" : "text-ink"}>LiveWell</span>
+            <span className={isGallery ? "text-white" : "text-ink"}>
+              LiveWell
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             {navLinks.map((link, i) => {
-              const baseClass = `flex items-center gap-2 transition-colors cursor-pointer ${isGallery
-                ? "text-white/70 hover:text-white"
-                : "text-ink-muted hover:text-ink"
-                }`;
+              const baseClass = `flex items-center gap-2 transition-colors cursor-pointer ${
+                isGallery
+                  ? "text-white/70 hover:text-white"
+                  : "text-ink-muted hover:text-ink"
+              }`;
 
-              if ('to' in link) {
+              if ("to" in link) {
                 return (
-                  <Link key={i} to={link.to as string} className={baseClass}>
+                  <Link
+                    key={i}
+                    to={link.to as string}
+                    className={baseClass}
+                  >
                     {link.icon && <link.icon className="w-4 h-4" />}
                     {link.label}
                   </Link>
@@ -105,17 +117,18 @@ function App() {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setLang(targetLang)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border-2 transition-all cursor-pointer ${isGallery
-                ? "border-white/20 bg-white/10 text-white hover:bg-white/20"
-                : "border-pastel-lavender bg-pastel-lavender-bg text-ink hover:bg-pastel-lavender/30"
-                }`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border-2 transition-all cursor-pointer ${
+                isGallery
+                  ? "border-white/20 bg-white/10 text-white hover:bg-white/20"
+                  : "border-steel/30 bg-steel-bg text-ink hover:bg-mist-bg"
+              }`}
             >
+              {c.nav.toggle}
               <img
                 src={flagUrls[targetLang]}
                 className="w-4 h-4 rounded-full object-cover"
                 alt="flag"
               />
-              {c.nav.toggle}
             </motion.button>
             <button
               onClick={() => setMenuOpen(true)}
@@ -142,15 +155,18 @@ function App() {
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              className={`fixed top-0 right-0 z-50 h-full w-72 shadow-2xl flex flex-col transition-colors duration-300 ${isGallery
-                ? "bg-dark-section border-l border-white/10"
-                : "bg-cream border-l border-gray-200/60"
-                }`}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className={`fixed top-0 right-0 z-50 h-full w-72 shadow-2xl flex flex-col transition-colors duration-300 ${
+                isGallery
+                  ? "bg-dark-section border-l border-white/10"
+: "bg-cream border-l border-warm-stone/40"
+              }`}
             >
               <div className="flex items-center justify-between px-5 h-16">
                 <span
-                  className={`font-heading font-bold flex items-center gap-2 ${isGallery ? "text-white" : "text-ink"
-                    }`}
+                  className={`font-heading font-bold flex items-center gap-2 ${
+                    isGallery ? "text-white" : "text-ink"
+                  }`}
                 >
                   <Leaf className="w-5 h-5" /> LiveWell
                 </span>
@@ -163,12 +179,13 @@ function App() {
               </div>
               <div className="flex flex-col p-4 gap-2">
                 {navLinks.map((link, i) => {
-                  const baseClass = `p-4 rounded-xl font-medium flex items-center gap-3 ${isGallery
-                    ? "text-white/80 hover:bg-white/10"
-                    : "text-ink-muted hover:bg-black/5"
-                    }`;
+                  const baseClass = `p-4 rounded-xl font-medium flex items-center gap-3 ${
+                    isGallery
+                      ? "text-white/80 hover:bg-white/10"
+                      : "text-ink-muted hover:bg-sage-bg/50"
+                  }`;
 
-                  if ('to' in link) {
+                  if ("to" in link) {
                     return (
                       <Link
                         key={i}
@@ -201,23 +218,9 @@ function App() {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<HomePage lang={lang} />} />
-          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/gallery" element={<GalleryPage lang={lang} />} />
         </Routes>
       </AnimatePresence>
-
-      {/* ───── FOOTER ───── */}
-      <footer className="bg-cream-warm border-t border-gray-200/60">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-center">
-          <p className="font-heading font-700 text-xl text-ink flex items-center justify-center gap-2">
-            <Leaf className="w-5 h-5 text-pastel-green" />
-            LiveWell{" "}
-            <span className="text-ink-muted font-normal">(VidaSalud)</span>
-          </p>
-          <p className="text-xs text-ink-subtle mt-4">
-            © {new Date().getFullYear()} LiveWell / VidaSalud
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }
@@ -229,89 +232,90 @@ export default App;
 ================================================
 FILE: constants.ts
 ================================================
+// constants.ts
 import {
-    HeartPulse,
-    Salad,
-    Moon,
-    Smartphone,
-    Sparkles,
-    ShowerHead,
-    Brain,
-    ClipboardList,
-    Users,
-    Hash,
-    Clock,
-    Presentation,
-    BarChart3,
+  HeartPulse,
+  Salad,
+  Moon,
+  Smartphone,
+  Sparkles,
+  ShowerHead,
+  Brain,
+  ClipboardList,
+  Users,
+  Hash,
+  Clock,
+  Presentation,
+  BarChart3,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { type Lang } from "./content";
 
 export const pastelColors = [
-    {
-        bg: "bg-pastel-green-bg",
-        border: "border-pastel-green",
-        text: "text-green-800",
-    },
-    {
-        bg: "bg-pastel-peach-bg",
-        border: "border-pastel-peach",
-        text: "text-orange-800",
-    },
-    {
-        bg: "bg-pastel-blue-bg",
-        border: "border-pastel-blue",
-        text: "text-blue-800",
-    },
-    {
-        bg: "bg-pastel-lavender-bg",
-        border: "border-pastel-lavender",
-        text: "text-purple-800",
-    },
-    {
-        bg: "bg-pastel-rose-bg",
-        border: "border-pastel-rose",
-        text: "text-pink-800",
-    },
-    {
-        bg: "bg-pastel-sky-bg",
-        border: "border-pastel-sky",
-        text: "text-sky-800",
-    },
-    {
-        bg: "bg-pastel-mint-bg",
-        border: "border-pastel-mint",
-        text: "text-teal-800",
-    },
-    {
-        bg: "bg-pastel-amber-bg",
-        border: "border-pastel-amber",
-        text: "text-amber-800",
-    },
+  {
+    bg: "bg-pastel-green-bg",
+    border: "border-pastel-green/40",
+    text: "text-[#4a5a3d]",
+  },
+  {
+    bg: "bg-pastel-blue-bg",
+    border: "border-pastel-blue/40",
+    text: "text-[#3a5570]",
+  },
+  {
+    bg: "bg-pastel-lavender-bg",
+    border: "border-pastel-lavender/40",
+    text: "text-[#5a6b7a]",
+  },
+  {
+    bg: "bg-pastel-mint-bg",
+    border: "border-pastel-mint/40",
+    text: "text-[#3d5a4a]",
+  },
+  {
+    bg: "bg-pastel-peach-bg",
+    border: "border-pastel-peach/40",
+    text: "text-[#6a5545]",
+  },
+  {
+    bg: "bg-pastel-sky-bg",
+    border: "border-pastel-sky/40",
+    text: "text-[#455a6d]",
+  },
+  {
+    bg: "bg-warm-stone-bg",
+    border: "border-warm-stone/40",
+    text: "text-[#5a5855]",
+  },
+  {
+    bg: "bg-pastel-amber-bg",
+    border: "border-pastel-amber/40",
+    text: "text-[#5a5340]",
+  },
 ];
 
 export const sessionIcons: Record<number, LucideIcon> = {
-    1: HeartPulse,
-    2: Salad,
-    3: Moon,
-    4: Smartphone,
-    5: Sparkles,
-    6: ShowerHead,
-    7: Brain,
-    8: ClipboardList,
+  1: HeartPulse,
+  2: Salad,
+  3: Moon,
+  4: Smartphone,
+  5: Sparkles,
+  6: ShowerHead,
+  7: Brain,
+  8: ClipboardList,
 };
 
 export const structureIcons = [Users, Hash, Clock, Presentation, BarChart3];
 
 export const flagUrls: Record<Lang, string> = {
-    es: "https://cdn-icons-png.flaticon.com/512/197/197593.png",
-    en: "https://cdn-icons-png.flaticon.com/512/197/197374.png",
+  es: "https://cdn-icons-png.flaticon.com/512/197/197593.png",
+  en: "https://cdn-icons-png.flaticon.com/512/197/197374.png",
 };
 
 export const langSwap = {
-    initial: { opacity: 0, y: 8 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-    exit: { opacity: 0, y: -8, transition: { duration: 0.2 } },
+  initial: { opacity: 0, y: 8 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  exit: { opacity: 0, y: -8, transition: { duration: 0.2 } },
 };
 
 
@@ -381,7 +385,7 @@ export const content: Record<Lang, Content> = {
       backHome: "Back to Home",
     },
     nav: {
-      toggle: "ES",
+      toggle: "Ver en",
       mission: "Mission",
       structure: "Structure",
       sessions: "Sessions",
@@ -561,7 +565,7 @@ export const content: Record<Lang, Content> = {
       backHome: "Volver al Inicio",
     },
     nav: {
-      toggle: "EN",
+      toggle: "View in",
       mission: "Misi\u00f3n",
       structure: "Estructura",
       sessions: "Charlas",
@@ -765,32 +769,45 @@ FILE: index.css
   --font-sans: "Inter", system-ui, sans-serif;
   --font-heading: "Outfit", system-ui, sans-serif;
 
-  --color-cream: #faf9f6;
-  --color-cream-warm: #f5f0eb;
-  --color-ink: #1a1a2e;
-  --color-ink-light: #2d2d44;
-  --color-ink-muted: #5a5a78;
-  --color-ink-subtle: #8888a0;
+  --color-cream: #f4f3ef;
+  --color-cream-warm: #eae8e2;
+  --color-ink: #1a2a1e;
+  --color-ink-light: #2a3b27;
+  --color-ink-muted: #5a6b58;
+  --color-ink-subtle: #7a8b78;
 
-  --color-pastel-green: #a8d8b9;
-  --color-pastel-green-bg: #e8f5ec;
-  --color-pastel-blue: #a0c4e8;
-  --color-pastel-blue-bg: #e3eef8;
-  --color-pastel-lavender: #c4b5e0;
-  --color-pastel-lavender-bg: #ede7f6;
-  --color-pastel-peach: #f0c4a8;
-  --color-pastel-peach-bg: #fef0e5;
-  --color-pastel-rose: #e8a0b0;
-  --color-pastel-rose-bg: #fce4ec;
-  --color-pastel-sky: #90caf9;
-  --color-pastel-sky-bg: #e1f0fd;
-  --color-pastel-mint: #80cbc4;
-  --color-pastel-mint-bg: #dff5f2;
-  --color-pastel-amber: #ffd180;
-  --color-pastel-amber-bg: #fff8e1;
+  --color-sage: #70805d;
+  --color-sage-light: #8a9a78;
+  --color-sage-bg: #e4e8dc;
+  --color-forest: #2a3b27;
+  --color-forest-bg: #d4ddd2;
+  --color-steel: #55738d;
+  --color-steel-light: #6a8aa5;
+  --color-steel-bg: #dce6ee;
+  --color-mist: #96a7b6;
+  --color-mist-bg: #e6ecf0;
+  --color-warm-stone: #cbc8c4;
+  --color-warm-stone-bg: #eeedeb;
 
-  --color-dark-section: #1a1a2e;
-  --color-dark-section-alt: #232340;
+  --color-pastel-green: #70805d;
+  --color-pastel-green-bg: #e4e8dc;
+  --color-pastel-blue: #55738d;
+  --color-pastel-blue-bg: #dce6ee;
+  --color-pastel-lavender: #96a7b6;
+  --color-pastel-lavender-bg: #e6ecf0;
+  --color-pastel-peach: #a89078;
+  --color-pastel-peach-bg: #ece4db;
+  --color-pastel-rose: #8d7080;
+  --color-pastel-rose-bg: #e8dfe4;
+  --color-pastel-sky: #6a8aa5;
+  --color-pastel-sky-bg: #dfe9f0;
+  --color-pastel-mint: #5d806e;
+  --color-pastel-mint-bg: #dce8e1;
+  --color-pastel-amber: #8a7d5d;
+  --color-pastel-amber-bg: #e8e4d8;
+
+  --color-dark-section: #2a3b27;
+  --color-dark-section-alt: #344432;
 }
 
 *,
@@ -901,50 +918,57 @@ export function RevealItem({
 ================================================
 FILE: components/ScrollToTop.tsx
 ================================================
+// components/ScrollToTop.tsx
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 
 export default function ScrollToTop() {
-    const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const { pathname } = useLocation();
 
-    useEffect(() => {
-        const toggleVisibility = () => {
-            // Show button when page is scrolled down 300px
-            if (window.pageYOffset > 300) {
-                setIsVisible(true);
-            } else {
-                setIsVisible(false);
-            }
-        };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
-        window.addEventListener("scroll", toggleVisibility);
-        return () => window.removeEventListener("scroll", toggleVisibility);
-    }, []);
-
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
     };
 
-    return (
-        <AnimatePresence>
-            {isVisible && (
-                <motion.button
-                    initial={{ opacity: 0, scale: 0.5, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.5, y: 20 }}
-                    onClick={scrollToTop}
-                    className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-pastel-green text-white shadow-lg hover:bg-green-600 transition-colors md:hidden flex items-center justify-center"
-                    aria-label="Scroll to top"
-                >
-                    <ArrowUp className="w-6 h-6" />
-                </motion.button>
-            )}
-        </AnimatePresence>
-    );
+    window.addEventListener("scroll", toggleVisibility);
+    return () =>
+      window.removeEventListener("scroll", toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.5, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.5, y: 20 }}
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-sage text-white shadow-lg hover:bg-forest transition-colors md:hidden flex items-center justify-center"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp className="w-6 h-6" />
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
 }
 
 
@@ -952,65 +976,134 @@ export default function ScrollToTop() {
 ================================================
 FILE: pages/GalleryPage.tsx
 ================================================
-import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+// pages/GalleryPage.tsx
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { galleryImages } from "../gallery-data";
+import { content, type Lang } from "../content";
 import { RevealGroup, RevealItem } from "../components/Reveal";
 
-export default function GalleryPage() {
-    return (
-        <motion.main
-            key="gallery"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="pt-16 pb-24"
-        >
-            <div className="max-w-6xl mx-auto px-4">
-                <div className="mb-12">
-                    <Link
-                        to="/"
-                        className="flex items-center gap-2 text-white/50 hover:text-white mb-6 transition-colors cursor-pointer w-fit"
-                    >
-                        <ArrowLeft className="w-4 h-4" /> Back to Home
-                    </Link>
-                    <h1 className="text-5xl font-heading font-bold text-white mb-2">
-                        Program Gallery
-                    </h1>
-                    <p className="text-white/60 text-lg">
-                        Capturing moments from our wellness sessions
-                    </p>
-                </div>
+interface GalleryPageProps {
+  lang: Lang;
+}
 
-                <RevealGroup className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-                    {galleryImages.map((src, i) => (
-                        <RevealItem key={i} className="break-inside-avoid">
-                            <motion.div
-                                whileHover={{ scale: 1.02 }}
-                                className="relative group overflow-hidden rounded-2xl bg-white/5 border border-white/10"
-                            >
-                                <img
-                                    src={`/gallery/${src}`}
-                                    alt={`Gallery ${i}`}
-                                    className="w-full h-auto object-cover group-hover:grayscale-0 transition-all duration-500"
-                                    onError={(e) =>
-                                    (e.currentTarget.src =
-                                        "https://placehold.co/600x400/1a1a2e/white?text=Media+Coming+Soon")
-                                    }
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                                    <span className="text-white text-sm font-medium">
-                                        LiveWell Session Snapshot
-                                    </span>
-                                </div>
-                            </motion.div>
-                        </RevealItem>
-                    ))}
-                </RevealGroup>
-            </div>
-        </motion.main>
-    );
+export default function GalleryPage({ lang }: GalleryPageProps) {
+  const [selectedImage, setSelectedImage] = useState<string | null>(
+    null,
+  );
+  const c = content[lang].gallery;
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedImage(null);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  useEffect(() => {
+    if (selectedImage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedImage]);
+
+  return (
+    <motion.main
+      key="gallery"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      className="pt-16 pb-24"
+    >
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="mb-12">
+          <Link
+            to="/"
+            className="flex items-center gap-2 text-sage-light/70 hover:text-sage-light mb-6 transition-colors cursor-pointer w-fit"
+          >
+            <ArrowLeft className="w-4 h-4" /> {c.backHome}
+          </Link>
+          <h1 className="text-5xl font-heading font-bold text-white mb-2">
+            {c.title}
+          </h1>
+          <p className="text-mist text-lg">{c.subtitle}</p>
+        </div>
+
+        <RevealGroup className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+          {galleryImages.map((src, i) => (
+            <RevealItem key={i} className="break-inside-avoid">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                onClick={() => setSelectedImage(src)}
+                className="relative group overflow-hidden rounded-2xl bg-white/5 border border-sage/20 cursor-pointer"
+              >
+                <img
+                  src={`/gallery/${src}`}
+                  alt={`Gallery ${i}`}
+                  className="w-full h-auto object-cover group-hover:grayscale-0 transition-all duration-500"
+                  onError={(e) =>
+                    (e.currentTarget.src =
+                      "https://placehold.co/600x400/2a3b27/white?text=Media+Coming+Soon")
+                  }
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-forest/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                  <span className="text-white text-sm font-medium">
+                    LiveWell Session Snapshot
+                  </span>
+                </div>
+              </motion.div>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+      </div>
+
+      {/* Fullscreen Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-[100] preserve-3d bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
+          >
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedImage(null);
+              }}
+              className="absolute top-6 right-6 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-[110] hover:cursor-pointer"
+            >
+              <X className="w-8 h-8" />
+            </motion.button>
+
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{
+                type: "spring",
+                damping: 25,
+                stiffness: 300,
+              }}
+              src={`/gallery/${selectedImage}`}
+              alt="Full size"
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.main>
+  );
 }
 
 
@@ -1018,268 +1111,268 @@ export default function GalleryPage() {
 ================================================
 FILE: pages/HomePage.tsx
 ================================================
+// pages/HomePage.tsx
 import { motion, AnimatePresence } from "framer-motion";
-import {
-    ChevronRight,
-    Target,
-} from "lucide-react";
+import { ChevronRight, Target } from "lucide-react";
 import { content, type Lang } from "../content";
 import {
-    pastelColors,
-    sessionIcons,
-    structureIcons,
-    langSwap,
+  pastelColors,
+  sessionIcons,
+  structureIcons,
+  langSwap,
 } from "../constants";
 import { RevealGroup, RevealItem } from "../components/Reveal";
 
 interface HomePageProps {
-    lang: Lang;
+  lang: Lang;
 }
 
 export default function HomePage({ lang }: HomePageProps) {
-    const c = content[lang];
+  const c = content[lang];
 
-    return (
-        <motion.main
-            key="home"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-        >
-            {/* ───── HERO ───── */}
-            <section id="hero" className="relative overflow-hidden">
-                <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute -top-32 -right-32 w-96 h-96 bg-pastel-green/20 rounded-full blur-3xl" />
-                    <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-pastel-lavender/20 rounded-full blur-3xl" />
-                </div>
+  return (
+    <motion.main
+      key="home"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      {/* ───── HERO ───── */}
+      <section id="hero" className="relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-32 -right-32 w-96 h-96 bg-sage/15 rounded-full blur-3xl" />
+          <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-steel/15 rounded-full blur-3xl" />
+        </div>
 
-                <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 sm:pt-28 sm:pb-24 text-center">
-                    <RevealGroup>
-                        <RevealItem>
-                            <h1 className="font-heading font-900 text-6xl sm:text-8xl lg:text-9xl text-ink tracking-tighter leading-none">
-                                {c.hero.title}
-                            </h1>
-                            <p className="font-heading font-500 text-2xl sm:text-3xl lg:text-4xl text-pastel-lavender mt-2 tracking-tight">
-                                {c.hero.subtitle}
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 sm:pt-28 sm:pb-24 text-center">
+          <RevealGroup>
+            <RevealItem>
+              <h1 className="font-heading font-900 text-6xl sm:text-8xl lg:text-9xl text-ink tracking-tighter leading-none">
+                {c.hero.title}
+              </h1>
+              <p className="font-heading font-500 text-2xl sm:text-3xl lg:text-4xl text-steel mt-2 tracking-tight">
+                {c.hero.subtitle}
+              </p>
+            </RevealItem>
+
+            <RevealItem>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.p
+                  key={lang + "-tagline"}
+                  variants={langSwap}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  className="mt-8 text-lg sm:text-xl text-ink-muted max-w-2xl mx-auto leading-relaxed"
+                >
+                  {c.hero.tagline}
+                </motion.p>
+              </AnimatePresence>
+            </RevealItem>
+
+            <RevealItem>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={lang + "-why"}
+                  variants={langSwap}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  className="mt-12 max-w-2xl mx-auto text-left bg-white rounded-2xl shadow-lg shadow-forest/5 border border-warm-stone/50 p-8"
+                >
+                  <h3 className="font-heading font-700 text-xl text-ink mb-4">
+                    {c.hero.whyName.heading}
+                  </h3>
+                  <ul className="space-y-3">
+                    {c.hero.whyName.points.map((point, i) => (
+                      <li
+                        key={i}
+                        className="flex gap-3 text-ink-light leading-relaxed"
+                      >
+                        <ChevronRight className="mt-1 w-4 h-4 text-sage flex-shrink-0" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  {c.hero.whyName.bilingual && (
+                    <p className="mt-6 text-ink-muted text-sm leading-relaxed border-t border-warm-stone/40 pt-4">
+                      {c.hero.whyName.bilingual}
+                    </p>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </RevealItem>
+          </RevealGroup>
+        </div>
+      </section>
+
+      {/* ───── MISSION ───── */}
+      <section id="mission" className="bg-dark-section text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+          <RevealGroup>
+            <RevealItem className="text-center mb-12">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-sage/20 text-sage-light text-sm font-medium tracking-wide uppercase mb-6">
+                {lang === "en" ? "Our Purpose" : "Nuestro Propósito"}
+              </span>
+              <h2 className="font-heading font-800 text-3xl sm:text-4xl lg:text-5xl tracking-tight">
+                {c.mission.heading}
+              </h2>
+            </RevealItem>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={lang + "-mission"}
+                variants={langSwap}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="space-y-6"
+              >
+                {c.mission.text.split("\n\n").map((paragraph, i) => (
+                  <RevealItem key={i}>
+                    <p className="text-lg text-white/80 leading-relaxed">
+                      {paragraph}
+                    </p>
+                  </RevealItem>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </RevealGroup>
+        </div>
+      </section>
+
+      {/* ───── STRUCTURE ───── */}
+      <section id="structure" className="bg-cream-warm">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+          <RevealGroup>
+            <RevealItem className="text-center mb-14">
+              <h2 className="font-heading font-800 text-3xl sm:text-4xl lg:text-5xl text-ink tracking-tight">
+                {c.structure.heading}
+              </h2>
+            </RevealItem>
+
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={lang + "-struct"}
+                variants={langSwap}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+              >
+                {c.structure.items.map((item, i) => {
+                  const color = pastelColors[i % pastelColors.length];
+                  const Icon =
+                    structureIcons[i % structureIcons.length];
+                  return (
+                    <RevealItem key={i}>
+                      <motion.div
+                        whileHover={{ y: -3 }}
+                        className={`rounded-2xl p-6 border ${color.bg} ${color.border} h-full`}
+                      >
+                        <div className="flex items-center gap-3 mb-3">
+                          <div
+                            className={`w-9 h-9 rounded-xl ${color.bg} border ${color.border} flex items-center justify-center`}
+                          >
+                            <Icon
+                              className={`w-[18px] h-[18px] ${color.text}`}
+                            />
+                          </div>
+                          <p
+                            className={`text-xs font-bold uppercase tracking-wider ${color.text}`}
+                          >
+                            {item.label}
+                          </p>
+                        </div>
+                        <p className="text-ink font-heading font-600 leading-relaxed">
+                          {item.value}
+                        </p>
+                      </motion.div>
+                    </RevealItem>
+                  );
+                })}
+              </motion.div>
+            </AnimatePresence>
+          </RevealGroup>
+        </div>
+      </section>
+
+      {/* ───── SESSIONS ───── */}
+      <section id="sessions" className="bg-cream">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+          <RevealGroup>
+            <RevealItem className="text-center mb-14">
+              <h2 className="font-heading font-800 text-3xl sm:text-4xl lg:text-5xl text-ink tracking-tight">
+                {c.sessions.heading}
+              </h2>
+            </RevealItem>
+
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={lang + "-sessions"}
+                variants={langSwap}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="space-y-6"
+              >
+                {c.sessions.list.map((session, i) => {
+                  const color = pastelColors[i % pastelColors.length];
+                  const Icon =
+                    sessionIcons[session.number] || Target;
+                  return (
+                    <RevealItem key={session.number}>
+                      <div className="rounded-2xl bg-white border border-warm-stone/40 shadow-sm overflow-hidden">
+                        <div
+                          className={`${color.bg} px-6 sm:px-8 py-5 flex items-center gap-4 border-b ${color.border}`}
+                        >
+                          <Icon
+                            className={`w-8 h-8 ${color.text}`}
+                          />
+                          <div>
+                            <p
+                              className={`text-sm font-bold ${color.text} uppercase tracking-wider`}
+                            >
+                              {lang === "en"
+                                ? `Session ${session.number}`
+                                : `Charla ${session.number}`}
                             </p>
-                        </RevealItem>
-
-                        <RevealItem>
-                            <AnimatePresence mode="wait" initial={false}>
-                                <motion.p
-                                    key={lang + "-tagline"}
-                                    variants={langSwap}
-                                    initial="initial"
-                                    animate="animate"
-                                    exit="exit"
-                                    className="mt-8 text-lg sm:text-xl text-ink-muted max-w-2xl mx-auto leading-relaxed"
-                                >
-                                    {c.hero.tagline}
-                                </motion.p>
-                            </AnimatePresence>
-                        </RevealItem>
-
-                        <RevealItem>
-                            <AnimatePresence mode="wait" initial={false}>
-                                <motion.div
-                                    key={lang + "-why"}
-                                    variants={langSwap}
-                                    initial="initial"
-                                    animate="animate"
-                                    exit="exit"
-                                    className="mt-12 max-w-2xl mx-auto text-left bg-white rounded-2xl shadow-lg shadow-black/5 border border-gray-100 p-8"
-                                >
-                                    <h3 className="font-heading font-700 text-xl text-ink mb-4">
-                                        {c.hero.whyName.heading}
-                                    </h3>
-                                    <ul className="space-y-3">
-                                        {c.hero.whyName.points.map((point, i) => (
-                                            <li
-                                                key={i}
-                                                className="flex gap-3 text-ink-light leading-relaxed"
-                                            >
-                                                <ChevronRight className="mt-1 w-4 h-4 text-pastel-green flex-shrink-0" />
-                                                <span>{point}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                    {c.hero.whyName.bilingual && (
-                                        <p className="mt-6 text-ink-muted text-sm leading-relaxed border-t border-gray-100 pt-4">
-                                            {c.hero.whyName.bilingual}
-                                        </p>
-                                    )}
-                                </motion.div>
-                            </AnimatePresence>
-                        </RevealItem>
-                    </RevealGroup>
-                </div>
-            </section>
-
-            {/* ───── MISSION ───── */}
-            <section id="mission" className="bg-dark-section text-white">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-                    <RevealGroup>
-                        <RevealItem className="text-center mb-12">
-                            <span className="inline-block px-4 py-1.5 rounded-full bg-white/10 text-white/80 text-sm font-medium tracking-wide uppercase mb-6">
-                                {lang === "en" ? "Our Purpose" : "Nuestro Propósito"}
-                            </span>
-                            <h2 className="font-heading font-800 text-3xl sm:text-4xl lg:text-5xl tracking-tight">
-                                {c.mission.heading}
-                            </h2>
-                        </RevealItem>
-                        <AnimatePresence mode="wait" initial={false}>
-                            <motion.div
-                                key={lang + "-mission"}
-                                variants={langSwap}
-                                initial="initial"
-                                animate="animate"
-                                exit="exit"
-                                className="space-y-6"
-                            >
-                                {c.mission.text.split("\n\n").map((paragraph, i) => (
-                                    <RevealItem key={i}>
-                                        <p className="text-lg text-white/80 leading-relaxed">
-                                            {paragraph}
-                                        </p>
-                                    </RevealItem>
-                                ))}
-                            </motion.div>
-                        </AnimatePresence>
-                    </RevealGroup>
-                </div>
-            </section>
-
-            {/* ───── STRUCTURE ───── */}
-            <section id="structure" className="bg-cream-warm">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-                    <RevealGroup>
-                        <RevealItem className="text-center mb-14">
-                            <h2 className="font-heading font-800 text-3xl sm:text-4xl lg:text-5xl text-ink tracking-tight">
-                                {c.structure.heading}
-                            </h2>
-                        </RevealItem>
-
-                        <AnimatePresence mode="wait" initial={false}>
-                            <motion.div
-                                key={lang + "-struct"}
-                                variants={langSwap}
-                                initial="initial"
-                                animate="animate"
-                                exit="exit"
-                                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-                            >
-                                {c.structure.items.map((item, i) => {
-                                    const color = pastelColors[i % pastelColors.length];
-                                    const Icon = structureIcons[i % structureIcons.length];
-                                    return (
-                                        <RevealItem key={i}>
-                                            <motion.div
-                                                whileHover={{ y: -3 }}
-                                                className={`rounded-2xl p-6 border ${color.bg} ${color.border} border-opacity-40 h-full`}
-                                            >
-                                                <div className="flex items-center gap-3 mb-3">
-                                                    <div
-                                                        className={`w-9 h-9 rounded-xl ${color.bg} border ${color.border} border-opacity-60 flex items-center justify-center`}
-                                                    >
-                                                        <Icon
-                                                            className={`w-[18px] h-[18px] ${color.text}`}
-                                                        />
-                                                    </div>
-                                                    <p
-                                                        className={`text-xs font-bold uppercase tracking-wider ${color.text}`}
-                                                    >
-                                                        {item.label}
-                                                    </p>
-                                                </div>
-                                                <p className="text-ink font-heading font-600 leading-relaxed">
-                                                    {item.value}
-                                                </p>
-                                            </motion.div>
-                                        </RevealItem>
-                                    );
-                                })}
-                            </motion.div>
-                        </AnimatePresence>
-                    </RevealGroup>
-                </div>
-            </section>
-
-            {/* ───── SESSIONS ───── */}
-            <section id="sessions" className="bg-cream">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-                    <RevealGroup>
-                        <RevealItem className="text-center mb-14">
-                            <h2 className="font-heading font-800 text-3xl sm:text-4xl lg:text-5xl text-ink tracking-tight">
-                                {c.sessions.heading}
-                            </h2>
-                        </RevealItem>
-
-                        <AnimatePresence mode="wait" initial={false}>
-                            <motion.div
-                                key={lang + "-sessions"}
-                                variants={langSwap}
-                                initial="initial"
-                                animate="animate"
-                                exit="exit"
-                                className="space-y-6"
-                            >
-                                {c.sessions.list.map((session, i) => {
-                                    const color = pastelColors[i % pastelColors.length];
-                                    const Icon = sessionIcons[session.number] || Target;
-                                    return (
-                                        <RevealItem key={session.number}>
-                                            <div className="rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden">
-                                                <div
-                                                    className={`${color.bg} px-6 sm:px-8 py-5 flex items-center gap-4 border-b ${color.border} border-opacity-40`}
-                                                >
-                                                    <Icon className={`w-8 h-8 ${color.text}`} />
-                                                    <div>
-                                                        <p
-                                                            className={`text-sm font-bold ${color.text} uppercase tracking-wider`}
-                                                        >
-                                                            {lang === "en"
-                                                                ? `Session ${session.number}`
-                                                                : `Charla ${session.number}`}
-                                                        </p>
-                                                        <h3 className="font-heading font-700 text-xl sm:text-2xl text-ink">
-                                                            {session.title}
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                                <div className="px-6 sm:px-8 py-6">
-                                                    <div className="mb-4">
-                                                        <p className="text-xs font-bold text-ink-muted uppercase mb-1">
-                                                            {lang === "en" ? "Goal" : "Objetivo"}
-                                                        </p>
-                                                        <p className="text-ink-light">
-                                                            {session.goal}
-                                                        </p>
-                                                    </div>
-                                                    <ul className="space-y-2">
-                                                        {session.content.map((item, j) => (
-                                                            <li
-                                                                key={j}
-                                                                className="flex gap-3 text-sm text-ink-light"
-                                                            >
-                                                                <span
-                                                                    className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${color.border} bg-current opacity-60`}
-                                                                />
-                                                                <span>{item}</span>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </RevealItem>
-                                    );
-                                })}
-                            </motion.div>
-                        </AnimatePresence>
-                    </RevealGroup>
-                </div>
-            </section>
-        </motion.main>
-    );
+                            <h3 className="font-heading font-700 text-xl sm:text-2xl text-ink">
+                              {session.title}
+                            </h3>
+                          </div>
+                        </div>
+                        <div className="px-6 sm:px-8 py-6">
+                          <div className="mb-4">
+                            <p className="text-xs font-bold text-ink-muted uppercase mb-1">
+                              {lang === "en" ? "Goal" : "Objetivo"}
+                            </p>
+                            <p className="text-ink-light">
+                              {session.goal}
+                            </p>
+                          </div>
+                          <ul className="space-y-2">
+                            {session.content.map((item, j) => (
+                              <li
+                                key={j}
+                                className="flex gap-3 text-sm text-ink-light"
+                              >
+                                <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-sage/60" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </RevealItem>
+                  );
+                })}
+              </motion.div>
+            </AnimatePresence>
+          </RevealGroup>
+        </div>
+      </section>
+    </motion.main>
+  );
 }
 
 

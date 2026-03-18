@@ -1,10 +1,8 @@
+// App.tsx
 import { useState } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { content, type Lang } from "./content";
-import {
-  motion,
-  AnimatePresence,
-} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Leaf,
   Menu,
@@ -19,8 +17,8 @@ import { flagUrls } from "./constants";
 
 function App() {
   const [lang, setLang] = useState<Lang>(() => {
-    const browserLang = navigator.language.split('-')[0];
-    return browserLang === 'es' ? 'es' : 'en';
+    const browserLang = navigator.language.split("-")[0];
+    return browserLang === "es" ? "es" : "en";
   });
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
@@ -32,25 +30,27 @@ function App() {
   const navLinks = isGallery
     ? [{ label: "Home", to: "/", icon: ArrowLeft }]
     : [
-      { href: "#mission", label: c.nav.mission },
-      { href: "#structure", label: c.nav.structure },
-      { href: "#sessions", label: c.nav.sessions },
-      { to: "/gallery", label: "Gallery", icon: ImageIcon },
-    ];
+        { href: "#mission", label: c.nav.mission },
+        { href: "#structure", label: c.nav.structure },
+        { href: "#sessions", label: c.nav.sessions },
+        { to: "/gallery", label: "Gallery", icon: ImageIcon },
+      ];
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-500 ${isGallery ? "bg-dark-section" : "bg-cream"
-        }`}
+      className={`min-h-screen transition-colors duration-500 ${
+        isGallery ? "bg-dark-section" : "bg-cream"
+      }`}
     >
       <ScrollToTop />
 
       {/* ───── NAVBAR ───── */}
       <nav
-        className={`sticky top-0 z-50 backdrop-blur-lg border-b transition-colors duration-300 ${isGallery
-          ? "bg-dark-section/80 border-white/10"
-          : "bg-cream/80 border-gray-200/60"
-          }`}
+        className={`sticky top-0 z-50 backdrop-blur-lg border-b transition-colors duration-300 ${
+          isGallery
+            ? "bg-dark-section/80 border-white/10"
+            : "bg-cream/80 border-stone/40"
+        }`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
           <Link
@@ -58,21 +58,30 @@ function App() {
             className="flex items-center gap-2 font-heading font-bold text-lg cursor-pointer"
           >
             <Leaf
-              className={`w-6 h-6 ${isGallery ? "text-white" : "text-pastel-green"}`}
+              className={`w-6 h-6 ${
+                isGallery ? "text-sage-light" : "text-sage"
+              }`}
             />
-            <span className={isGallery ? "text-white" : "text-ink"}>LiveWell</span>
+            <span className={isGallery ? "text-white" : "text-ink"}>
+              LiveWell
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             {navLinks.map((link, i) => {
-              const baseClass = `flex items-center gap-2 transition-colors cursor-pointer ${isGallery
-                ? "text-white/70 hover:text-white"
-                : "text-ink-muted hover:text-ink"
-                }`;
+              const baseClass = `flex items-center gap-2 transition-colors cursor-pointer ${
+                isGallery
+                  ? "text-white/70 hover:text-white"
+                  : "text-ink-muted hover:text-ink"
+              }`;
 
-              if ('to' in link) {
+              if ("to" in link) {
                 return (
-                  <Link key={i} to={link.to as string} className={baseClass}>
+                  <Link
+                    key={i}
+                    to={link.to as string}
+                    className={baseClass}
+                  >
                     {link.icon && <link.icon className="w-4 h-4" />}
                     {link.label}
                   </Link>
@@ -90,10 +99,11 @@ function App() {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setLang(targetLang)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border-2 transition-all cursor-pointer ${isGallery
-                ? "border-white/20 bg-white/10 text-white hover:bg-white/20"
-                : "border-pastel-lavender bg-pastel-lavender-bg text-ink hover:bg-pastel-lavender/30"
-                }`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border-2 transition-all cursor-pointer ${
+                isGallery
+                  ? "border-white/20 bg-white/10 text-white hover:bg-white/20"
+                  : "border-steel/30 bg-steel-bg text-ink hover:bg-mist-bg"
+              }`}
             >
               {c.nav.toggle}
               <img
@@ -128,15 +138,17 @@ function App() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className={`fixed top-0 right-0 z-50 h-full w-72 shadow-2xl flex flex-col transition-colors duration-300 ${isGallery
-                ? "bg-dark-section border-l border-white/10"
-                : "bg-cream border-l border-gray-200/60"
-                }`}
+              className={`fixed top-0 right-0 z-50 h-full w-72 shadow-2xl flex flex-col transition-colors duration-300 ${
+                isGallery
+                  ? "bg-dark-section border-l border-white/10"
+                  : "bg-cream border-l border-stone/40"
+              }`}
             >
               <div className="flex items-center justify-between px-5 h-16">
                 <span
-                  className={`font-heading font-bold flex items-center gap-2 ${isGallery ? "text-white" : "text-ink"
-                    }`}
+                  className={`font-heading font-bold flex items-center gap-2 ${
+                    isGallery ? "text-white" : "text-ink"
+                  }`}
                 >
                   <Leaf className="w-5 h-5" /> LiveWell
                 </span>
@@ -149,12 +161,13 @@ function App() {
               </div>
               <div className="flex flex-col p-4 gap-2">
                 {navLinks.map((link, i) => {
-                  const baseClass = `p-4 rounded-xl font-medium flex items-center gap-3 ${isGallery
-                    ? "text-white/80 hover:bg-white/10"
-                    : "text-ink-muted hover:bg-black/5"
-                    }`;
+                  const baseClass = `p-4 rounded-xl font-medium flex items-center gap-3 ${
+                    isGallery
+                      ? "text-white/80 hover:bg-white/10"
+                      : "text-ink-muted hover:bg-sage-bg/50"
+                  }`;
 
-                  if ('to' in link) {
+                  if ("to" in link) {
                     return (
                       <Link
                         key={i}
@@ -190,7 +203,6 @@ function App() {
           <Route path="/gallery" element={<GalleryPage lang={lang} />} />
         </Routes>
       </AnimatePresence>
-
     </div>
   );
 }

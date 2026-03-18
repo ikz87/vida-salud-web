@@ -6,32 +6,47 @@
   --font-sans: "Inter", system-ui, sans-serif;
   --font-heading: "Outfit", system-ui, sans-serif;
 
-  --color-cream: #faf9f6;
-  --color-cream-warm: #f5f0eb;
-  --color-ink: #1a1a2e;
-  --color-ink-light: #2d2d44;
-  --color-ink-muted: #5a5a78;
-  --color-ink-subtle: #8888a0;
+  --color-cream: #f4f3ef;
+  --color-cream-warm: #eae8e2;
+  --color-ink: #1a2a1e;
+  --color-ink-light: #2a3b27;
+  --color-ink-muted: #5a6b58;
+  --color-ink-subtle: #7a8b78;
 
-  --color-pastel-green: #a8d8b9;
-  --color-pastel-green-bg: #e8f5ec;
-  --color-pastel-blue: #a0c4e8;
-  --color-pastel-blue-bg: #e3eef8;
-  --color-pastel-lavender: #c4b5e0;
-  --color-pastel-lavender-bg: #ede7f6;
-  --color-pastel-peach: #f0c4a8;
-  --color-pastel-peach-bg: #fef0e5;
-  --color-pastel-rose: #e8a0b0;
-  --color-pastel-rose-bg: #fce4ec;
-  --color-pastel-sky: #90caf9;
-  --color-pastel-sky-bg: #e1f0fd;
-  --color-pastel-mint: #80cbc4;
-  --color-pastel-mint-bg: #dff5f2;
-  --color-pastel-amber: #ffd180;
-  --color-pastel-amber-bg: #fff8e1;
+  /* Primary palette from the image */
+  --color-sage: #70805d;
+  --color-sage-light: #8a9a78;
+  --color-sage-bg: #e4e8dc;
+  --color-forest: #2a3b27;
+  --color-forest-bg: #d4ddd2;
+  --color-steel: #55738d;
+  --color-steel-light: #6a8aa5;
+  --color-steel-bg: #dce6ee;
+  --color-mist: #96a7b6;
+  --color-mist-bg: #e6ecf0;
+  --color-stone: #cbc8c4;
+  --color-stone-bg: #eeedeb;
 
-  --color-dark-section: #1a1a2e;
-  --color-dark-section-alt: #232340;
+  /* Accent variations for cards */
+  --color-pastel-green: #70805d;
+  --color-pastel-green-bg: #e4e8dc;
+  --color-pastel-blue: #55738d;
+  --color-pastel-blue-bg: #dce6ee;
+  --color-pastel-lavender: #96a7b6;
+  --color-pastel-lavender-bg: #e6ecf0;
+  --color-pastel-peach: #a89078;
+  --color-pastel-peach-bg: #ece4db;
+  --color-pastel-rose: #8d7080;
+  --color-pastel-rose-bg: #e8dfe4;
+  --color-pastel-sky: #6a8aa5;
+  --color-pastel-sky-bg: #dfe9f0;
+  --color-pastel-mint: #5d806e;
+  --color-pastel-mint-bg: #dce8e1;
+  --color-pastel-amber: #8a7d5d;
+  --color-pastel-amber-bg: #e8e4d8;
+
+  --color-dark-section: #2a3b27;
+  --color-dark-section-alt: #344432;
 }
 
 *,
