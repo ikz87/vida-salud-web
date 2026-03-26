@@ -18,10 +18,32 @@ export interface Content {
   gallery: Gallery;
   nav: {
     toggle: string;
-    mission: string;
-    structure: string;
-    sessions: string;
-    implementation: string;
+    categories: {
+      title: string;
+      items: { label: string; to: string }[];
+    }[];
+  };
+  founder: {
+    heading: string;
+    description: string;
+    messageHeading: string;
+    message: string;
+  };
+  volunteers: {
+    heading: string;
+    text: string;
+  };
+  statistics: {
+    heading: string;
+    text: string;
+  };
+  testimonies: {
+    heading: string;
+    list: { text: string; author: string }[];
+  };
+  articles: {
+    heading: string;
+    text: string;
   };
   hero: {
     title: string;
@@ -45,6 +67,10 @@ export interface Content {
     heading: string;
     list: Session[];
   };
+  events: {
+    heading: string;
+    text: string;
+  };
   implementation: {
     heading: string;
     items: { label: string; text: string }[];
@@ -61,15 +87,85 @@ export const content: Record<Lang, Content> = {
     },
     nav: {
       toggle: "Ver en",
-      mission: "Mission",
-      structure: "Structure",
-      sessions: "Sessions",
-      implementation: "Resources",
+      categories: [
+        {
+          title: "About us",
+          items: [
+            { label: "Home", to: "/" },
+            { label: "Founder", to: "/founder" },
+            { label: "Mission", to: "/mission" },
+            { label: "Volunteers", to: "/volunteers" },
+          ],
+        },
+        {
+          title: "Our Impact",
+          items: [
+            { label: "Statistics", to: "/statistics" },
+            { label: "Testimonies", to: "/testimonies" },
+          ],
+        },
+        {
+          title: "Program",
+          items: [
+            { label: "Structure", to: "/structure" },
+            { label: "Sessions", to: "/sessions" },
+            { label: "Events", to: "/events" },
+          ],
+        },
+        {
+          title: "Resources",
+          items: [
+            { label: "Articles", to: "/articles" },
+            { label: "Gallery", to: "/gallery" },
+          ],
+        },
+      ],
+    },
+    founder: {
+      heading: "Our Founder",
+      description:
+        "Ariana Ochoa is a 17 year old eleventh grade student.\n\nAriana has volunteered in hospitals and health centers, driven and motivated by her passion for service, leadership, and medicine.\n\nSince ninth grade, her passion for science has led her to create initiatives aimed at promoting health education among children, thus achieving a positive change in their lives.",
+      messageHeading: "Message from the Founder",
+      message:
+        "It is a great honor for me to share with you the story and mission of the Vida Salud Program.\n\nI founded Vida Salud during my ninth grade, motivated primarily by the reality that many children face due to a lack of access to basic health education, which led me to consider what I could do to generate a positive impact on their lives.\n\nWhat began as a simple idea has become a space where knowledge, care, and hope come together. Thanks to the help of young volunteers, we have been able to deliver interactive and dynamic talks to children on essential health topics such as nutrition, hygiene, dental care, mental health, and the importance of sleep.\n\nGiving these talks has further strengthened my desire to pursue a career in the health field, transforming me and demonstrating that small actions, when done with purpose, can generate a lasting impact.\n\nIt is gratifying to see how these children are becoming aware of the importance of forming lifelong habits through caring for their bodies and minds.\n\nMy vision for the future is that Vida Salud can expand, grow, and reach more children and communities in vulnerable situations, continuing with our objective of sharing knowledge that can also empower and uplift them, as we firmly believe that every child deserves to grow up healthy, informed, and hopeful for their future.\n\nThank you for continuing to be part of this mission, in which we are not only sharing knowledge but also doing our part to build healthier lives and brighter futures.",
+    },
+    volunteers: {
+      heading: "Volunteers",
+      text: "TODO: Content about volunteers.",
+    },
+    statistics: {
+      heading: "Statistics",
+      text: "TODO: Content about program impact statistics.",
+    },
+    testimonies: {
+      heading: "Testimonies",
+      list: [
+        {
+          text: "I really like the course and the talks I've received; they have taught me and helped me understand diseases and sleep. I like the way they teach us.",
+          author: "Thais Blanco",
+        },
+        {
+          text: "Ariana teaches the children her knowledge about health with great enthusiasm; we are very grateful for the talks she gives them.",
+          author: "Teacher Lorena Morales Gómez",
+        },
+        {
+          text: "Truly, it was the best experience regarding health care. I learned how to take care of my body, about healthy foods like different types of grains, and how to wash my teeth and hands well. Thank you very much.",
+          author: "Anderson",
+        },
+        {
+          text: "I really liked Teacher Ariana's classes because she taught us many things we didn't know about body hygiene, mental health, stress management, the importance of sleeping well, and the consequences of lack of sleep. Now I brush my teeth correctly.",
+          author: "Marcela",
+        },
+      ],
+    },
+    articles: {
+      heading: "Articles",
+      text: "TODO: Educational articles and resources.",
     },
     hero: {
       title: "LiveWell",
-      subtitle: "(VidaSalud)",
-      tagline: "Comprehensive Student Health & Wellness Program",
+      subtitle: "",
+      tagline: "Children and adolescents from 7-16 years old",
       whyName: {
         heading: 'Why "LiveWell"?',
         points: [
@@ -83,15 +179,14 @@ export const content: Record<Lang, Content> = {
     },
     mission: {
       heading: "Program Mission",
-      text: "The LiveWell Program is designed to equip elementary and middle school students with the knowledge, skills, and habits they need to make healthy choices in their daily lives. At a stage where habits are still being formed, LiveWell emphasizes both physical health (nutrition, sleep, hygiene, exercise) and mental health (emotions, stress management, balance with technology).\n\nThe program\u2019s mission is not only to inform students, but to empower them\u2014helping them understand why health matters and how small daily decisions can make a big difference over time. By combining interactive talks, group activities, and reflection, LiveWell/VidaSalud aims to create a school culture that values wellness, giving students practical tools they can apply at school, at home, and in their community.",
+      text: "The LiveWell Program is designed to equip children and adolescents from 7-16 years old with the knowledge, skills, and habits they need to make healthy choices in their daily lives. At a stage where habits are still being formed, LiveWell emphasizes both physical health (nutrition, sleep, hygiene, exercise) and mental health (emotions, stress management, balance with technology).\n\nThe program\u2019s mission is not only to inform students, but to empower them\u2014helping them understand why health matters and how small daily decisions can make a big difference over time. By combining interactive talks, group activities, and reflection, LiveWell/VidaSalud aims to create a school culture that values wellness, giving students practical tools they can apply at school, at home, and in their community.",
     },
     structure: {
       heading: "Program Structure",
       items: [
         {
           label: "Target group",
-          value:
-            "Students ages 8\u201312 (upper elementary and middle school)",
+          value: "Children and adolescents (7-16 years old)",
         },
         {
           label: "Number of sessions",
@@ -100,7 +195,7 @@ export const content: Record<Lang, Content> = {
         {
           label: "Duration of each session",
           value:
-            "~30 minutes (15 min presentation + 15 min activities/discussion)",
+            "~60 minutes (presentation and activities/discussion)",
         },
         {
           label: "Format",
@@ -213,6 +308,10 @@ export const content: Record<Lang, Content> = {
         },
       ],
     },
+    events: {
+      heading: "Special Events",
+      text: "At the end of the program, we celebrate a special graduation, in which we recognize the effort and dedication of each child.\n\nWe provide them with an educational manual, which includes the information learned during the talks, and illustrative images that will help them reinforce what they have seen throughout the sessions.\n\nWe want the children, in addition to learning, to be able to promote health in their homes and communities.",
+    },
     implementation: {
       heading: "Implementation & Resources",
       items: [
@@ -241,16 +340,85 @@ export const content: Record<Lang, Content> = {
     },
     nav: {
       toggle: "View in",
-      mission: "Misi\u00f3n",
-      structure: "Estructura",
-      sessions: "Charlas",
-      implementation: "Recursos",
+      categories: [
+        {
+          title: "Quienes somos",
+          items: [
+            { label: "Inicio", to: "/" },
+            { label: "Fundadora", to: "/founder" },
+            { label: "Misión", to: "/mission" },
+            { label: "Voluntarios", to: "/volunteers" },
+          ],
+        },
+        {
+          title: "Nuestro Impacto",
+          items: [
+            { label: "Estadísticas", to: "/statistics" },
+            { label: "Testimonios", to: "/testimonies" },
+          ],
+        },
+        {
+          title: "Programa",
+          items: [
+            { label: "Estructura", to: "/structure" },
+            { label: "Charlas", to: "/sessions" },
+            { label: "Eventos", to: "/events" },
+          ],
+        },
+        {
+          title: "Recursos",
+          items: [
+            { label: "Artículos", to: "/articles" },
+            { label: "Galería", to: "/gallery" },
+          ],
+        },
+      ],
+    },
+    founder: {
+      heading: "Nuestra Fundadora",
+      description:
+        "Ariana Ochoa es una estudiante de 17 años de Onceavo grado.\n\nAriana se ha desempeñado como voluntaria en hospitales y centros de salud impulsada y motivada por su pasión hacia el servicio, liderazgo y la medicina.\n\nDesde noveno grado, su pasión por las ciencias la han llevado a crear iniciativas cuya finalidad son promover la educacion de la salud entre los niños, logrando así un cambio positivo en ellos.",
+      messageHeading: "Mensaje de la Fundadora",
+      message:
+        "Es un gran honor para mí poder compartir con ustedes la historia y misión del Programa Vida Salud.\n\nFunde Vida Salud durante mi noveno grado, motivada principalmente por la realidad en la que muchos niños se encuentran al carecer de acceso a una educación básica en temas de salud, lo que me llevó a plantearme qué podía hacer para generar un impacto positivo en sus vidas.\n\nLo que comenzó como una idea sencilla se ha convertido en un espacio donde el conocimiento, el cuidado y la esperanza se unen.\n\nGracias a la ayuda de jóvenes voluntarios hemos logrado impartir charlas interactivas y dinámicas con niños y niñas sobre temas esenciales de salud como nutrición, higiene, cuidado dental, salud mental y la importancia del sueño.\n\nImpartir estas charlas me han llevado a fortalecer aún más mi vocación de seguir una carrera en el área de la salud, transformándome y demostrándome que acciones pequeñas cuando se realizan con propósito pueden generar un impacto duradero.\n\nEs gratificante poder valorar cómo estos niños están adquiriendo conciencia sobre la importancia de formar hábitos para toda la vida a través del cuidado de su cuerpo y mente.\n\nMi visión a futuro es que Vida Salud pueda expandirse, crecer más, y lograr llegar a más niños, niñas y comunidades en situaciones vulnerables continuando con nuestro objetivo de compartir conocimientos que también puedan empoderar y elevarlos, ya que creemos firmemente que todo niño merece crecer sano, informado y con esperanza en su futuro.\n\nGracias por seguir formando parte de esta misión, en la cual no solo estamos compartiendo conocimiento sino poniendo nuestro granito de arena en construir vidas más saludables y futuros más brillantes.",
+    },
+    volunteers: {
+      heading: "Voluntarios",
+      text: "TODO: Contenido sobre los voluntarios.",
+    },
+    statistics: {
+      heading: "Estadísticas",
+      text: "TODO: Contenido sobre estadísticas de impacto del programa.",
+    },
+    testimonies: {
+      heading: "Testimonios",
+      list: [
+        {
+          text: "Me gusta mucho el curso, y las charlas que he recibido, me han enseñado y he entendido sobre las enfermedades y el sueño. Me gusta la forma como nos enseñan.",
+          author: "Thais Blanco",
+        },
+        {
+          text: "Ariana imparte a los niños con mucho entusiasmo sus conocimientos sobre la salud, estamos muy agradecidos por las charlas que les da.",
+          author: "Profesora Lorena Morales Gómez",
+        },
+        {
+          text: "La verdad fue la mejor experiencia sobre el tema del cuido de la salud, aprendí sobre cómo cuidar mi cuerpo, sobre las comidas saludables como los diferentes tipos de granos, cómo lavarme bien los diente y las manos . Muchas gracias.",
+          author: "Anderson",
+        },
+        {
+          text: "Me gustaron mucho las clases de la profe Ariana, por qué nos enseñó bastantes cosas que no conocíamos sobre la higiene corporal, la salud mental, manejo del estrés, la importancia de dormir bien y las consecuencias de la falta de sueño, ahora ya me cepillo los dientes correctamente.",
+          author: "Marcela",
+        },
+      ],
+    },
+    articles: {
+      heading: "Artículos",
+      text: "TODO: Artículos educativos y recursos.",
     },
     hero: {
-      title: "LiveWell",
-      subtitle: "(Vida Salud)",
-      tagline:
-        "Programa de Cuidado Integral de la Salud para Estudiantes de Middle School",
+      title: "Vida Salud",
+      subtitle: "",
+      tagline: "Niños y niñas de 7-16 años",
       whyName: {
         heading: "\u00bfPor qu\u00e9 \u201cLiveWell\u201d?",
         points: [
@@ -264,32 +432,32 @@ export const content: Record<Lang, Content> = {
     },
     mission: {
       heading: "Misi\u00f3n del Programa",
-      text: "El programa tiene como objetivo proporcionar a los estudiantes de middle school las herramientas y conocimientos necesarios para asumir la responsabilidad de su salud f\u00edsica y mental. A trav\u00e9s de charlas interactivas, se busca fomentar h\u00e1bitos saludables en \u00e1reas clave como la alimentaci\u00f3n, el sue\u00f1o, el uso de tecnolog\u00eda, la higiene personal y el bienestar emocional.",
+      text: "El programa tiene como objetivo proporcionar a niños y niñas de 7-16 años las herramientas y conocimientos necesarios para asumir la responsabilidad de su salud f\u00edsica y mental. A trav\u00e9s de charlas interactivas, se busca fomentar h\u00e1bitos saludables en \u00e1reas clave como la alimentaci\u00f3n, el sue\u00f1o, el uso de tecnolog\u00eda, la higiene personal y el bienestar emocional.",
     },
     structure: {
       heading: "Estructura del Programa",
       items: [
         {
-          label: "Duraci\u00f3n de cada charla",
-          value: "30 minutos (presentaci\u00f3n y actividades)",
-        },
-        {
-          label: "N\u00famero total de charlas",
-          value: "7\u20138",
-        },
-        {
           label: "Participantes",
-          value: "Estudiantes de primaria (8\u201312 a\u00f1os)",
+          value: "Niños y niñas (7-16 años)",
+        },
+        {
+          label: "Número total de charlas",
+          value: "7–8",
+        },
+        {
+          label: "Duración de cada charla",
+          value: "60 minutos (presentación y actividades)",
         },
         {
           label: "Formato",
           value:
-            "Presentaciones interactivas, din\u00e1micas grupales, y sesiones de preguntas y respuestas",
+            "Presentaciones interactivas, dinámicas grupales, y sesiones de preguntas y respuestas",
         },
         {
-          label: "Evaluaci\u00f3n",
+          label: "Evaluación",
           value:
-            "Encuestas previas y posteriores al programa para medir cambios en conocimiento, actitudes y h\u00e1bitos",
+            "Encuestas previas y posteriores al programa para medir cambios en conocimiento, actitudes y hábitos",
         },
       ],
     },
@@ -391,24 +559,28 @@ export const content: Record<Lang, Content> = {
         },
       ],
     },
+    events: {
+      heading: "Eventos Especiales",
+      text: "Al finalizar el programa, celebramos una graduación especial, en la cual reconocemos el esfuerzo y dedicación de cada niño.\n\nLes hacemos entrega de un manual educativo, que incluye la información aprendida durante las charlas, e imágenes ilustrativas que les ayudarán a reforzar lo visto lo largo de las charlas.\n\nQueremos que los niños además de aprender, puedan promover la salud en sus hogares y comunidades.",
+    },
     implementation: {
-      heading: "Implementaci\u00f3n y Recursos",
+      heading: "Implementación y Recursos",
       items: [
         {
           label: "Materiales",
           text: "Presentaciones visuales, folletos informativos, diarios de salud personal y actividades interactivas cortas.",
         },
         {
-          label: "Evaluaci\u00f3n",
-          text: "Encuestas antes y despu\u00e9s del programa para medir cambios en el conocimiento y la actitud de los estudiantes hacia su salud (estad\u00edsticas que se usar\u00e1n para medir el impacto del programa).",
+          label: "Evaluación",
+          text: "Encuestas antes y después del programa para medir cambios en el conocimiento y la actitud de los estudiantes hacia su salud (estadísticas que se usarán para medir el impacto del programa).",
         },
         {
           label: "Impacto",
-          text: "Los estudiantes adquirir\u00e1n habilidades pr\u00e1cticas y h\u00e1bitos m\u00e1s saludables que mejorar\u00e1n su rendimiento acad\u00e9mico, su autoconfianza y su bienestar general.",
+          text: "Los estudiantes adquirirán habilidades prácticas y hábitos más saludables que mejorarán su rendimiento académico, su autoconfianza y su bienestar general.",
         },
       ],
       closing:
-        "Con LiveWell (VidaSalud), los estudiantes no solo aprender\u00e1n sobre salud, sino que tambi\u00e9n practicar\u00e1n h\u00e1bitos reales que pueden transformar su estilo de vida. El nombre biling\u00fce del programa refleja su flexibilidad: en espa\u00f1ol (VidaSalud) o en ingl\u00e9s (LiveWell), el mensaje sigue siendo el mismo\u2014vida, salud y equilibrio para cada estudiante.",
+        "Con LiveWell (VidaSalud), los estudiantes no solo aprenderán sobre salud, sino que también practicarán hábitos reales que pueden transformar su estilo de vida. El nombre bilingüe del programa refleja su flexibilidad: en español (VidaSalud) o en inglés (LiveWell), el mensaje sigue siendo el mismo—vida, salud y equilibrio para cada estudiante.",
     },
   },
 };

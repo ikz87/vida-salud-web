@@ -2,16 +2,29 @@ Directory structure:
 └── src/
     ├── App.tsx
     ├── constants.ts
-    ├── content.ts
     ├── gallery-data.ts
     ├── index.css
     ├── main.tsx
+    ├── .gitingestignore
     ├── components/
+    │   ├── Dropdown.tsx
+    │   ├── PageLayout.tsx
     │   ├── Reveal.tsx
     │   └── ScrollToTop.tsx
+    ├── data/
+    │   └── drive-manifest.json
     └── pages/
+        ├── ArticlesPage.tsx
+        ├── EventsPage.tsx
+        ├── FounderPage.tsx
         ├── GalleryPage.tsx
-        └── HomePage.tsx
+        ├── HomePage.tsx
+        ├── MissionPage.tsx
+        ├── SessionsPage.tsx
+        ├── StatisticsPage.tsx
+        ├── StructurePage.tsx
+        ├── TestimoniesPage.tsx
+        └── VolunteersPage.tsx
 
 ================================================
 FILE: App.tsx
@@ -25,12 +38,20 @@ import {
   Leaf,
   Menu,
   X,
-  Image as ImageIcon,
-  ArrowLeft,
 } from "lucide-react";
 import HomePage from "./pages/HomePage";
 import GalleryPage from "./pages/GalleryPage";
+import FounderPage from "./pages/FounderPage";
+import MissionPage from "./pages/MissionPage";
+import VolunteersPage from "./pages/VolunteersPage";
+import StatisticsPage from "./pages/StatisticsPage";
+import TestimoniesPage from "./pages/TestimoniesPage";
+import StructurePage from "./pages/StructurePage";
+import SessionsPage from "./pages/SessionsPage";
+import ArticlesPage from "./pages/ArticlesPage";
+import EventsPage from "./pages/EventsPage";
 import ScrollToTop from "./components/ScrollToTop";
+import Dropdown from "./components/Dropdown";
 import { flagUrls } from "./constants";
 
 function App() {
@@ -45,30 +66,21 @@ function App() {
   const isGallery = location.pathname === "/gallery";
   const targetLang = lang === "en" ? "es" : "en";
 
-  const navLinks = isGallery
-    ? [{ label: "Home", to: "/", icon: ArrowLeft }]
-    : [
-        { href: "#mission", label: c.nav.mission },
-        { href: "#structure", label: c.nav.structure },
-        { href: "#sessions", label: c.nav.sessions },
-        { to: "/gallery", label: "Gallery", icon: ImageIcon },
-      ];
+  const categories = c.nav.categories;
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-500 ${
-        isGallery ? "bg-dark-section" : "bg-cream"
-      }`}
+      className={`min-h-screen transition-colors duration-500 ${isGallery ? "bg-dark-section" : "bg-cream"
+        }`}
     >
       <ScrollToTop />
 
       {/* ───── NAVBAR ───── */}
       <nav
-        className={`sticky top-0 z-50 backdrop-blur-lg border-b transition-colors duration-300 ${
-          isGallery
-            ? "bg-dark-section/80 border-white/10"
-            : "bg-cream/80 border-warm-stone/40"
-        }`}
+        className={`sticky top-0 z-50 backdrop-blur-lg border-b transition-colors duration-300 ${isGallery
+          ? "bg-dark-section/80 border-white/10"
+          : "bg-cream/80 border-stone/40"
+          }`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
           <Link
@@ -76,52 +88,33 @@ function App() {
             className="flex items-center gap-2 font-heading font-bold text-lg cursor-pointer"
           >
             <Leaf
-              className={`w-6 h-6 ${
-                isGallery ? "text-sage-light" : "text-sage"
-              }`}
+              className={`w-6 h-6 ${isGallery ? "text-sage-light" : "text-sage"
+                }`}
             />
             <span className={isGallery ? "text-white" : "text-ink"}>
               LiveWell
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            {navLinks.map((link, i) => {
-              const baseClass = `flex items-center gap-2 transition-colors cursor-pointer ${
-                isGallery
-                  ? "text-white/70 hover:text-white"
-                  : "text-ink-muted hover:text-ink"
-              }`;
-
-              if ("to" in link) {
-                return (
-                  <Link
-                    key={i}
-                    to={link.to as string}
-                    className={baseClass}
-                  >
-                    {link.icon && <link.icon className="w-4 h-4" />}
-                    {link.label}
-                  </Link>
-                );
-              }
-              return (
-                <a key={i} href={link.href} className={baseClass}>
-                  {link.label}
-                </a>
-              );
-            })}
+          <div className="hidden md:flex items-center gap-6">
+            {categories.map((cat, i) => (
+              <Dropdown
+                key={i}
+                title={cat.title}
+                items={cat.items}
+                isGallery={isGallery}
+              />
+            ))}
           </div>
 
           <div className="flex items-center gap-3">
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setLang(targetLang)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border-2 transition-all cursor-pointer ${
-                isGallery
-                  ? "border-white/20 bg-white/10 text-white hover:bg-white/20"
-                  : "border-steel/30 bg-steel-bg text-ink hover:bg-mist-bg"
-              }`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border-2 transition-all cursor-pointer ${isGallery
+                ? "border-white/20 bg-white/10 text-white hover:bg-white/20"
+                : "border-steel/30 bg-steel-bg text-ink hover:bg-mist-bg"
+                }`}
             >
               {c.nav.toggle}
               <img
@@ -156,17 +149,15 @@ function App() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className={`fixed top-0 right-0 z-50 h-full w-72 shadow-2xl flex flex-col transition-colors duration-300 ${
-                isGallery
-                  ? "bg-dark-section border-l border-white/10"
-: "bg-cream border-l border-warm-stone/40"
-              }`}
+              className={`fixed top-0 right-0 z-50 h-full w-72 shadow-2xl flex flex-col transition-colors duration-300 ${isGallery
+                ? "bg-dark-section border-l border-white/10"
+                : "bg-cream border-l border-stone/40"
+                }`}
             >
               <div className="flex items-center justify-between px-5 h-16">
                 <span
-                  className={`font-heading font-bold flex items-center gap-2 ${
-                    isGallery ? "text-white" : "text-ink"
-                  }`}
+                  className={`font-heading font-bold flex items-center gap-2 ${isGallery ? "text-white" : "text-ink"
+                    }`}
                 >
                   <Leaf className="w-5 h-5" /> LiveWell
                 </span>
@@ -177,38 +168,32 @@ function App() {
                   <X className={isGallery ? "text-white" : "text-ink"} />
                 </button>
               </div>
-              <div className="flex flex-col p-4 gap-2">
-                {navLinks.map((link, i) => {
-                  const baseClass = `p-4 rounded-xl font-medium flex items-center gap-3 ${
-                    isGallery
-                      ? "text-white/80 hover:bg-white/10"
-                      : "text-ink-muted hover:bg-sage-bg/50"
-                  }`;
-
-                  if ("to" in link) {
-                    return (
-                      <Link
-                        key={i}
-                        to={link.to as string}
-                        onClick={() => setMenuOpen(false)}
-                        className={baseClass}
-                      >
-                        {link.icon && <link.icon className="w-5 h-5" />}
-                        {link.label}
-                      </Link>
-                    );
-                  }
-                  return (
-                    <a
-                      key={i}
-                      href={link.href}
-                      onClick={() => setMenuOpen(false)}
-                      className={baseClass}
+              <div className="flex flex-col p-4 gap-6 overflow-y-auto">
+                {categories.map((cat, i) => (
+                  <div key={i} className="flex flex-col gap-2">
+                    <h3
+                      className={`px-4 text-xs font-bold uppercase tracking-widest ${isGallery ? "text-white/40" : "text-ink-muted/50"
+                        }`}
                     >
-                      {link.label}
-                    </a>
-                  );
-                })}
+                      {cat.title}
+                    </h3>
+                    <div className="flex flex-col gap-1">
+                      {cat.items.map((item, j) => (
+                        <Link
+                          key={j}
+                          to={item.to}
+                          onClick={() => setMenuOpen(false)}
+                          className={`px-4 py-3 rounded-xl font-medium text-sm transition-colors ${isGallery
+                            ? "text-white/80 hover:bg-white/10"
+                            : "text-ink hover:bg-sage-bg/50"
+                            }`}
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             </motion.aside>
           </>
@@ -219,6 +204,15 @@ function App() {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<HomePage lang={lang} />} />
           <Route path="/gallery" element={<GalleryPage lang={lang} />} />
+          <Route path="/founder" element={<FounderPage lang={lang} />} />
+          <Route path="/mission" element={<MissionPage lang={lang} />} />
+          <Route path="/volunteers" element={<VolunteersPage lang={lang} />} />
+          <Route path="/statistics" element={<StatisticsPage lang={lang} />} />
+          <Route path="/testimonies" element={<TestimoniesPage lang={lang} />} />
+          <Route path="/structure" element={<StructurePage lang={lang} />} />
+          <Route path="/sessions" element={<SessionsPage lang={lang} />} />
+          <Route path="/articles" element={<ArticlesPage lang={lang} />} />
+          <Route path="/events" element={<EventsPage lang={lang} />} />
         </Routes>
       </AnimatePresence>
     </div>
@@ -254,42 +248,42 @@ import { type Lang } from "./content";
 export const pastelColors = [
   {
     bg: "bg-pastel-green-bg",
-    border: "border-pastel-green/40",
+    border: "border-pastel-green",
     text: "text-[#4a5a3d]",
   },
   {
     bg: "bg-pastel-blue-bg",
-    border: "border-pastel-blue/40",
+    border: "border-pastel-blue",
     text: "text-[#3a5570]",
   },
   {
     bg: "bg-pastel-lavender-bg",
-    border: "border-pastel-lavender/40",
+    border: "border-pastel-lavender",
     text: "text-[#5a6b7a]",
   },
   {
     bg: "bg-pastel-mint-bg",
-    border: "border-pastel-mint/40",
+    border: "border-pastel-mint",
     text: "text-[#3d5a4a]",
   },
   {
     bg: "bg-pastel-peach-bg",
-    border: "border-pastel-peach/40",
+    border: "border-pastel-peach",
     text: "text-[#6a5545]",
   },
   {
     bg: "bg-pastel-sky-bg",
-    border: "border-pastel-sky/40",
+    border: "border-pastel-sky",
     text: "text-[#455a6d]",
   },
   {
-    bg: "bg-warm-stone-bg",
-    border: "border-warm-stone/40",
+    bg: "bg-stone-bg",
+    border: "border-stone",
     text: "text-[#5a5855]",
   },
   {
     bg: "bg-pastel-amber-bg",
-    border: "border-pastel-amber/40",
+    border: "border-pastel-amber",
     text: "text-[#5a5340]",
   },
 ];
@@ -316,426 +310,6 @@ export const langSwap = {
   initial: { opacity: 0, y: 8 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   exit: { opacity: 0, y: -8, transition: { duration: 0.2 } },
-};
-
-
-
-================================================
-FILE: content.ts
-================================================
-// content.ts
-export type Lang = "en" | "es";
-
-export interface Gallery {
-  title: string;
-  subtitle: string;
-  backHome: string;
-}
-
-export interface Session {
-  number: number;
-  title: string;
-  goal: string;
-  content: string[];
-}
-
-export interface Content {
-  gallery: Gallery;
-  nav: {
-    toggle: string;
-    mission: string;
-    structure: string;
-    sessions: string;
-    implementation: string;
-  };
-  hero: {
-    title: string;
-    subtitle: string;
-    tagline: string;
-    whyName: {
-      heading: string;
-      points: string[];
-      bilingual: string;
-    };
-  };
-  mission: {
-    heading: string;
-    text: string;
-  };
-  structure: {
-    heading: string;
-    items: { label: string; value: string }[];
-  };
-  sessions: {
-    heading: string;
-    list: Session[];
-  };
-  implementation: {
-    heading: string;
-    items: { label: string; text: string }[];
-    closing: string;
-  };
-}
-
-export const content: Record<Lang, Content> = {
-  en: {
-    gallery: {
-      title: "Program Gallery",
-      subtitle: "Moments from our health and wellness journey",
-      backHome: "Back to Home",
-    },
-    nav: {
-      toggle: "Ver en",
-      mission: "Mission",
-      structure: "Structure",
-      sessions: "Sessions",
-      implementation: "Resources",
-    },
-    hero: {
-      title: "LiveWell",
-      subtitle: "(VidaSalud)",
-      tagline: "Comprehensive Student Health & Wellness Program",
-      whyName: {
-        heading: 'Why "LiveWell"?',
-        points: [
-          "Live represents vitality, energy, and growth.",
-          "Well reflects balance, wellness, and health.",
-          "Together, LiveWell is short, memorable, and directly expresses the purpose of the program: helping students learn to live healthier, happier, and more balanced lives.",
-        ],
-        bilingual:
-          'Outside of school, the program is also known as VidaSalud in Spanish. This name expresses the same idea\u2014"Vida" meaning life and "Salud" meaning health\u2014reflecting vitality and well-being in a simple, positive way. Both names share the same mission: to guide young people toward healthier lifestyles.',
-      },
-    },
-    mission: {
-      heading: "Program Mission",
-      text: "The LiveWell Program is designed to equip elementary and middle school students with the knowledge, skills, and habits they need to make healthy choices in their daily lives. At a stage where habits are still being formed, LiveWell emphasizes both physical health (nutrition, sleep, hygiene, exercise) and mental health (emotions, stress management, balance with technology).\n\nThe program\u2019s mission is not only to inform students, but to empower them\u2014helping them understand why health matters and how small daily decisions can make a big difference over time. By combining interactive talks, group activities, and reflection, LiveWell/VidaSalud aims to create a school culture that values wellness, giving students practical tools they can apply at school, at home, and in their community.",
-    },
-    structure: {
-      heading: "Program Structure",
-      items: [
-        {
-          label: "Target group",
-          value:
-            "Students ages 8\u201312 (upper elementary and middle school)",
-        },
-        {
-          label: "Number of sessions",
-          value: "7\u20138 structured talks",
-        },
-        {
-          label: "Duration of each session",
-          value:
-            "~30 minutes (15 min presentation + 15 min activities/discussion)",
-        },
-        {
-          label: "Format",
-          value:
-            "Engaging presentations, group activities, role-play, and Q&A sessions",
-        },
-        {
-          label: "Evaluation",
-          value:
-            "Pre- and post-program surveys to measure changes in knowledge, attitudes, and habits",
-        },
-      ],
-    },
-    sessions: {
-      heading: "Session Topics & Descriptions",
-      list: [
-        {
-          number: 1,
-          title: "Introduction to Total Health",
-          goal: 'Introduce students to the concept of health as something more than "not being sick." Show them that caring for both their body and mind is essential to living well.',
-          content: [
-            'What "total health" means: physical + mental health',
-            "How body and mind affect each other (example: lack of sleep \u2192 stress, bad eating \u2192 low energy)",
-            "Short- and long-term benefits of caring for health",
-            "Overview of the program and why these skills matter in daily life",
-          ],
-        },
-        {
-          number: 2,
-          title: "Healthy Eating",
-          goal: "Teach students the importance of a balanced diet and how food affects their energy, learning, and mood.",
-          content: [
-            "The food groups and how each helps the body",
-            "What a balanced plate looks like (portion sizes, variety)",
-            "How to make smart food choices at home, school, and with snacks",
-            "Reading labels in simple ways (sugar, fats, proteins)",
-            "The connection between good nutrition, school performance, and emotional well-being",
-          ],
-        },
-        {
-          number: 3,
-          title: "The Importance of Sleep",
-          goal: "Explain why sleep is essential for growth, concentration, and emotions, and give students strategies to improve their sleep routines.",
-          content: [
-            "What happens during the different sleep stages",
-            "Recommended hours of sleep for children and adolescents",
-            "Consequences of poor sleep: irritability, poor memory, health problems",
-            "Tips for better sleep: consistent bedtime, technology limits, calming routines",
-          ],
-        },
-        {
-          number: 4,
-          title: "Healthy Technology Use",
-          goal: "Promote balance in technology use so students can enjoy the benefits while avoiding negative effects.",
-          content: [
-            "Positive uses of technology (learning, creativity, connection)",
-            "Risks of too much screen time: eye strain, less sleep, reduced focus",
-            "Setting healthy limits and taking breaks",
-            "Online safety and being responsible digital citizens",
-            "How to replace some screen time with active or social activities",
-          ],
-        },
-        {
-          number: 5,
-          title: "Dental Hygiene",
-          goal: "Emphasize the role of oral health in overall health and teach proper daily care practices.",
-          content: [
-            "Why dental hygiene matters for the whole body",
-            "Proper brushing and flossing techniques",
-            "Consequences of poor dental care (cavities, gum disease)",
-            "Healthy eating for strong teeth",
-            "How often to visit the dentist and why it matters",
-          ],
-        },
-        {
-          number: 6,
-          title: "Personal Hygiene",
-          goal: "Help students understand the importance of good hygiene for confidence, health, and social interaction.",
-          content: [
-            "Daily hygiene routines: bathing, washing hands, caring for skin and hair",
-            "Hygiene after sports or physical activity",
-            "Hygiene during puberty (menstrual care, sweat, skin changes)",
-            "How personal hygiene prevents illness and infections",
-            "Building personal responsibility in daily care",
-          ],
-        },
-        {
-          number: 7,
-          title: "Mental Health & Stress Management",
-          goal: "Build awareness about mental health and teach simple tools to manage stress in healthy ways.",
-          content: [
-            "What mental health means and why it\u2019s important",
-            "Identifying emotions and expressing them in safe ways",
-            "Everyday stressors for kids and how to handle them",
-            "Relaxation and mindfulness techniques (deep breathing, journaling, quiet time)",
-            "The importance of talking to someone you trust when feeling overwhelmed",
-          ],
-        },
-        {
-          number: 8,
-          title: "Creating a Personal Health Plan",
-          goal: "Encourage students to take ownership of their health by making a personalized plan that fits their daily routine.",
-          content: [
-            "Review of lessons from the program",
-            "Setting personal health goals (SMART goals: Specific, Measurable, Achievable, Realistic, Timely)",
-            "Building a weekly routine: balanced meals, regular sleep, hygiene, emotional care",
-            'Keeping a "health journal" to self-monitor progress',
-            "How to adjust goals and stay motivated over time",
-          ],
-        },
-      ],
-    },
-    implementation: {
-      heading: "Implementation & Resources",
-      items: [
-        {
-          label: "Materials",
-          text: "Visual slides, printed handouts, personal health journals, and short interactive activities",
-        },
-        {
-          label: "Evaluation",
-          text: "Before and after surveys to measure knowledge and behavior change (stats that will be used for the measure of the impact of the program)",
-        },
-        {
-          label: "Impact",
-          text: "Students will gain practical skills and healthier habits that improve their academic performance, self-confidence, and overall well-being",
-        },
-      ],
-      closing:
-        "With LiveWell (VidaSalud), students will not only learn about health but will also practice real habits that can transform their lifestyle. The program\u2019s bilingual name reflects its flexibility: in Spanish (VidaSalud) or in English (LiveWell), the message remains the same\u2014life, health, and balance for every student.",
-    },
-  },
-  es: {
-    gallery: {
-      title: "Galería del Programa",
-      subtitle: "Momentos de nuestro camino hacia el bienestar",
-      backHome: "Volver al Inicio",
-    },
-    nav: {
-      toggle: "View in",
-      mission: "Misi\u00f3n",
-      structure: "Estructura",
-      sessions: "Charlas",
-      implementation: "Recursos",
-    },
-    hero: {
-      title: "LiveWell",
-      subtitle: "(Vida Salud)",
-      tagline:
-        "Programa de Cuidado Integral de la Salud para Estudiantes de Middle School",
-      whyName: {
-        heading: "\u00bfPor qu\u00e9 \u201cLiveWell\u201d?",
-        points: [
-          "\u201cLive\u201d sugiere vida y vitalidad.",
-          "\u201cWell\u201d se asocia con bienestar y salud.",
-          "\u201cLiveWell\u201d es conciso, positivo y refleja el objetivo del programa de promover un estilo de vida saludable y equilibrado.",
-        ],
-        bilingual:
-          'Fuera de la escuela, el programa tambi\u00e9n se conoce como LiveWell en ingl\u00e9s. Este nombre expresa la misma idea\u2014"Live" significa vivir y "Well" significa bien\u2014reflejando vitalidad y bienestar de una manera simple y positiva. Ambos nombres comparten la misma misi\u00f3n: guiar a los j\u00f3venes hacia estilos de vida m\u00e1s saludables.',
-      },
-    },
-    mission: {
-      heading: "Misi\u00f3n del Programa",
-      text: "El programa tiene como objetivo proporcionar a los estudiantes de middle school las herramientas y conocimientos necesarios para asumir la responsabilidad de su salud f\u00edsica y mental. A trav\u00e9s de charlas interactivas, se busca fomentar h\u00e1bitos saludables en \u00e1reas clave como la alimentaci\u00f3n, el sue\u00f1o, el uso de tecnolog\u00eda, la higiene personal y el bienestar emocional.",
-    },
-    structure: {
-      heading: "Estructura del Programa",
-      items: [
-        {
-          label: "Duraci\u00f3n de cada charla",
-          value: "30 minutos (presentaci\u00f3n y actividades)",
-        },
-        {
-          label: "N\u00famero total de charlas",
-          value: "7\u20138",
-        },
-        {
-          label: "Participantes",
-          value: "Estudiantes de primaria (8\u201312 a\u00f1os)",
-        },
-        {
-          label: "Formato",
-          value:
-            "Presentaciones interactivas, din\u00e1micas grupales, y sesiones de preguntas y respuestas",
-        },
-        {
-          label: "Evaluaci\u00f3n",
-          value:
-            "Encuestas previas y posteriores al programa para medir cambios en conocimiento, actitudes y h\u00e1bitos",
-        },
-      ],
-    },
-    sessions: {
-      heading: "Contenido de las Charlas",
-      list: [
-        {
-          number: 1,
-          title: "Introducci\u00f3n a la Salud Integral",
-          goal: "Presentar la importancia de cuidar tanto la salud f\u00edsica como mental, y c\u00f3mo estas dos \u00e1reas est\u00e1n interconectadas.",
-          content: [
-            "Definici\u00f3n de salud integral.",
-            "Importancia de un enfoque equilibrado entre cuerpo y mente.",
-            "Consecuencias a corto y largo plazo de no cuidar la salud.",
-            "Introducci\u00f3n a los temas que se abordar\u00e1n en el programa.",
-          ],
-        },
-        {
-          number: 2,
-          title: "Alimentaci\u00f3n Saludable",
-          goal: "Ense\u00f1ar la importancia de una dieta equilibrada y c\u00f3mo afecta tanto el cuerpo como la mente.",
-          content: [
-            "Los grupos de alimentos y sus beneficios.",
-            "Qu\u00e9 es una dieta equilibrada: porciones adecuadas y variedad.",
-            "C\u00f3mo leer etiquetas de alimentos.",
-            "Consejos para mejorar h\u00e1bitos alimenticios en casa y en la escuela.",
-            "Impacto de la alimentaci\u00f3n en el rendimiento acad\u00e9mico y el estado de \u00e1nimo.",
-          ],
-        },
-        {
-          number: 3,
-          title: "La Importancia del Sue\u00f1o",
-          goal: "Concienciar sobre la importancia del sue\u00f1o para el crecimiento, desarrollo y bienestar emocional.",
-          content: [
-            "Fases del sue\u00f1o y su funci\u00f3n.",
-            "Recomendaciones de horas de sue\u00f1o para adolescentes.",
-            "Consecuencias de la falta de sue\u00f1o: problemas de concentraci\u00f3n, \u00e1nimo y salud.",
-            "Estrategias para mejorar la calidad del sue\u00f1o: rutinas, ambiente y tecnolog\u00eda.",
-          ],
-        },
-        {
-          number: 4,
-          title: "Uso Saludable de la Tecnolog\u00eda",
-          goal: "Promover un uso equilibrado de la tecnolog\u00eda para que los estudiantes puedan disfrutar de sus beneficios sin sufrir efectos negativos.",
-          content: [
-            "Usos positivos de la tecnolog\u00eda (aprendizaje, creatividad, conexi\u00f3n).",
-            "Riesgos del exceso de tiempo frente a la pantalla: fatiga visual, menos sue\u00f1o, menor concentraci\u00f3n.",
-            "Establecer l\u00edmites saludables y tomar descansos.",
-            "Seguridad en l\u00ednea y ser ciudadanos digitales responsables.",
-            "C\u00f3mo reemplazar parte del tiempo de pantalla con actividades f\u00edsicas o sociales.",
-          ],
-        },
-        {
-          number: 5,
-          title: "Higiene Dental",
-          goal: "Fomentar buenos h\u00e1bitos de higiene dental y su impacto en la salud general.",
-          content: [
-            "Importancia de la salud dental y su relaci\u00f3n con la salud general.",
-            "T\u00e9cnicas correctas de cepillado y uso de hilo dental.",
-            "Consejos para prevenir caries y enfermedades de las enc\u00edas.",
-            "Alimentaci\u00f3n saludable para dientes fuertes.",
-            "Frecuencia recomendada de visitas al dentista.",
-          ],
-        },
-        {
-          number: 6,
-          title: "Higiene Corporal",
-          goal: "Ense\u00f1ar la importancia de mantener una buena higiene corporal diaria.",
-          content: [
-            "Importancia del ba\u00f1o regular y el uso adecuado de productos de higiene.",
-            "Cuidado de la piel y el cabello.",
-            "Higiene en situaciones especiales: despu\u00e9s de hacer ejercicio, durante el per\u00edodo menstrual.",
-            "Prevenci\u00f3n de infecciones a trav\u00e9s de la higiene corporal.",
-            "Construir responsabilidad personal en el cuidado diario.",
-          ],
-        },
-        {
-          number: 7,
-          title: "Salud Mental y Manejo del Estr\u00e9s",
-          goal: "Desarrollar conciencia sobre la salud mental y proporcionar herramientas para manejar el estr\u00e9s.",
-          content: [
-            "Qu\u00e9 es la salud mental y por qu\u00e9 es importante.",
-            "Identificaci\u00f3n de emociones y c\u00f3mo expresarlas de manera saludable.",
-            "Estrategias para el manejo del estr\u00e9s: t\u00e9cnicas de relajaci\u00f3n y mindfulness.",
-            "La importancia de pedir ayuda y hablar sobre problemas emocionales.",
-          ],
-        },
-        {
-          number: 8,
-          title: "Creando un Plan Personal de Salud",
-          goal: "Ayudar a los estudiantes a integrar lo aprendido y a crear un plan personal para mantener su salud integral.",
-          content: [
-            "Recapitulaci\u00f3n de los temas abordados en el programa.",
-            "C\u00f3mo establecer metas de salud personal (metas SMART: Espec\u00edficas, Medibles, Alcanzables, Realistas, con Tiempo definido).",
-            "Elaboraci\u00f3n de un plan diario/semanal que incluya h\u00e1bitos de alimentaci\u00f3n, sue\u00f1o, higiene y cuidado emocional.",
-            'Mantener un "diario de salud" para monitorear el progreso.',
-            "Importancia de la autoevaluaci\u00f3n y ajustes en el plan personal.",
-          ],
-        },
-      ],
-    },
-    implementation: {
-      heading: "Implementaci\u00f3n y Recursos",
-      items: [
-        {
-          label: "Materiales",
-          text: "Presentaciones visuales, folletos informativos, diarios de salud personal y actividades interactivas cortas.",
-        },
-        {
-          label: "Evaluaci\u00f3n",
-          text: "Encuestas antes y despu\u00e9s del programa para medir cambios en el conocimiento y la actitud de los estudiantes hacia su salud (estad\u00edsticas que se usar\u00e1n para medir el impacto del programa).",
-        },
-        {
-          label: "Impacto",
-          text: "Los estudiantes adquirir\u00e1n habilidades pr\u00e1cticas y h\u00e1bitos m\u00e1s saludables que mejorar\u00e1n su rendimiento acad\u00e9mico, su autoconfianza y su bienestar general.",
-        },
-      ],
-      closing:
-        "Con LiveWell (VidaSalud), los estudiantes no solo aprender\u00e1n sobre salud, sino que tambi\u00e9n practicar\u00e1n h\u00e1bitos reales que pueden transformar su estilo de vida. El nombre biling\u00fce del programa refleja su flexibilidad: en espa\u00f1ol (VidaSalud) o en ingl\u00e9s (LiveWell), el mensaje sigue siendo el mismo\u2014vida, salud y equilibrio para cada estudiante.",
-    },
-  },
 };
 
 
@@ -776,6 +350,7 @@ FILE: index.css
   --color-ink-muted: #5a6b58;
   --color-ink-subtle: #7a8b78;
 
+  /* Primary palette from the image */
   --color-sage: #70805d;
   --color-sage-light: #8a9a78;
   --color-sage-bg: #e4e8dc;
@@ -786,9 +361,10 @@ FILE: index.css
   --color-steel-bg: #dce6ee;
   --color-mist: #96a7b6;
   --color-mist-bg: #e6ecf0;
-  --color-warm-stone: #cbc8c4;
-  --color-warm-stone-bg: #eeedeb;
+  --color-stone: #cbc8c4;
+  --color-stone-bg: #eeedeb;
 
+  /* Accent variations for cards */
   --color-pastel-green: #70805d;
   --color-pastel-green-bg: #e4e8dc;
   --color-pastel-blue: #55738d;
@@ -854,6 +430,179 @@ createRoot(document.getElementById('root')!).render(
     </BrowserRouter>
   </StrictMode>,
 )
+
+
+
+================================================
+FILE: .gitingestignore
+================================================
+./content.ts
+
+
+
+================================================
+FILE: components/Dropdown.tsx
+================================================
+// components/Dropdown.tsx
+import { useState, useRef, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
+
+interface DropdownProps {
+    title: string;
+    items: { label: string; to: string }[];
+    isGallery?: boolean;
+}
+
+export default function Dropdown({ title, items, isGallery }: DropdownProps) {
+    const [isOpen, setIsOpen] = useState(false);
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const portalRef = useRef<HTMLDivElement>(null);
+    const [coords, setCoords] = useState({ top: 0, left: 0, width: 0 });
+
+    const updateCoords = useCallback(() => {
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            setCoords({
+                top: rect.bottom,
+                left: rect.left,
+                width: Math.max(rect.width, 220),
+            });
+        }
+    }, []);
+
+    // Close when clicking outside both the button and the portal menu
+    useEffect(() => {
+        if (!isOpen) return;
+
+        updateCoords();
+
+        const handleClickOutside = (e: MouseEvent) => {
+            const target = e.target as Node;
+            if (
+                buttonRef.current &&
+                !buttonRef.current.contains(target) &&
+                portalRef.current &&
+                !portalRef.current.contains(target)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        const handleScroll = () => updateCoords();
+        const handleResize = () => updateCoords();
+
+        document.addEventListener("mousedown", handleClickOutside);
+        window.addEventListener("scroll", handleScroll, true);
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            window.removeEventListener("scroll", handleScroll, true);
+            window.removeEventListener("resize", handleResize);
+        };
+    }, [isOpen, updateCoords]);
+
+    return (
+        <>
+            <button
+                ref={buttonRef}
+                onClick={() => {
+                    if (!isOpen) updateCoords();
+                    setIsOpen((prev) => !prev);
+                }}
+                className={`flex items-center gap-1 transition-colors cursor-pointer py-2 ${isGallery
+                        ? "text-white/70 hover:text-white"
+                        : "text-ink-muted hover:text-ink"
+                    } font-medium text-sm`}
+            >
+                {title}
+                <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+                        }`}
+                />
+            </button>
+
+            {isOpen &&
+                createPortal(
+                    <div
+                        ref={portalRef}
+                        className="fixed z-[9999]"
+                        style={{
+                            top: coords.top + 8,
+                            left: coords.left,
+                            minWidth: coords.width,
+                        }}
+                    >
+                        <AnimatePresence>
+                            <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                className={`overflow-hidden rounded-2xl border shadow-2xl ${isGallery
+                                        ? "bg-dark-section border-white/10"
+                                        : "bg-white border-warm-stone/30"
+                                    }`}
+                            >
+                                <div className="p-2">
+                                    {items.map((item, i) => (
+                                        <Link
+                                            key={i}
+                                            to={item.to}
+                                            onClick={() => setIsOpen(false)}
+                                            className={`block px-4 py-2.5 rounded-xl text-sm transition-colors ${isGallery
+                                                    ? "text-white/80 hover:bg-white/10 hover:text-white"
+                                                    : "text-ink-muted hover:bg-sage-bg/50 hover:text-ink"
+                                                }`}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>,
+                    document.body
+                )}
+        </>
+    );
+}
+
+
+
+================================================
+FILE: components/PageLayout.tsx
+================================================
+// components/PageLayout.tsx
+import type { ReactNode } from "react";
+import { motion } from "framer-motion";
+
+interface PageLayoutProps {
+    children: ReactNode;
+    title: string;
+}
+
+export default function PageLayout({ children, title }: PageLayoutProps) {
+    return (
+        <motion.main
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10"
+        >
+            <header className="mb-12 text-center">
+                <h1 className="font-heading font-900 text-5xl sm:text-6xl text-ink tracking-tighter">
+                    {title}
+                </h1>
+            </header>
+            <div className="bg-white/50 backdrop-blur-sm rounded-3xl p-8 sm:p-12 border border-warm-stone/30 shadow-xl shadow-forest/5">
+                {children}
+            </div>
+        </motion.main>
+    );
+}
 
 
 
@@ -974,6 +723,291 @@ export default function ScrollToTop() {
 
 
 ================================================
+FILE: data/drive-manifest.json
+================================================
+{
+  "voluntarios": [
+    {
+      "type": "image",
+      "name": "Screenshot 2026-03-24 at 6.39.13 PM.png",
+      "path": "/drive/Voluntarios/Screenshot_2026-03-24_at_6.39.13_PM.png"
+    },
+    {
+      "type": "image",
+      "name": "WhatsApp Image 2026-03-10 at 20.38.22.jpeg",
+      "path": "/drive/Voluntarios/WhatsApp_Image_2026-03-10_at_20.38.22.jpeg"
+    }
+  ],
+  "eventos": []
+}
+
+
+================================================
+FILE: pages/ArticlesPage.tsx
+================================================
+// pages/ArticlesPage.tsx
+import { content, type Lang } from "../content";
+import PageLayout from "../components/PageLayout";
+import { RevealGroup, RevealItem } from "../components/Reveal";
+import { ArrowRight, BookOpen } from "lucide-react";
+
+export default function ArticlesPage({ lang }: { lang: Lang }) {
+  const c = content[lang];
+
+  // Placeholder data until content.ts is updated
+  const placeholders = [1, 2, 3, 4];
+
+  return (
+    <PageLayout title={c.articles.heading}>
+      <RevealGroup>
+        <div className="mb-12">
+          <RevealItem>
+            <p className="text-xl text-ink-muted leading-relaxed">
+              {c.articles.text}
+            </p>
+          </RevealItem>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {placeholders.map((idx) => (
+            <RevealItem key={idx}>
+              <article className="group flex flex-col h-full bg-white rounded-3xl border border-warm-stone/30 overflow-hidden hover:shadow-xl hover:shadow-steel/10 transition-all duration-500">
+                <div className="aspect-video bg-steel-bg/50 relative overflow-hidden flex items-center justify-center">
+                  <BookOpen className="w-12 h-12 text-steel/40 group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <div className="p-8 flex flex-col flex-grow">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="px-3 py-1 rounded-full bg-steel/10 text-steel text-xs font-bold uppercase tracking-wider">
+                      {lang === "es" ? "Educación" : "Education"}
+                    </span>
+                    <span className="text-sm text-stone font-medium">
+                      24 Mar 2026
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-heading font-bold text-ink mb-3 group-hover:text-steel transition-colors duration-300">
+                    {lang === "es" ? "Título del Artículo " : "Article Title "}
+                    {idx}
+                  </h3>
+                  <p className="text-ink-muted leading-relaxed flex-grow mb-6 line-clamp-3">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  </p>
+                  <button className="flex items-center gap-2 text-steel font-bold text-sm w-fit group/btn">
+                    {lang === "es" ? "Leer más" : "Read more"}
+                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </article>
+            </RevealItem>
+          ))}
+        </div>
+      </RevealGroup>
+    </PageLayout>
+  );
+}
+
+
+
+================================================
+FILE: pages/EventsPage.tsx
+================================================
+// pages/EventsPage.tsx
+import { content, type Lang } from "../content";
+import PageLayout from "../components/PageLayout";
+import { RevealGroup, RevealItem } from "../components/Reveal";
+import { GraduationCap, BookOpen, Users, Star, CalendarHeart } from "lucide-react";
+
+export default function EventsPage({ lang }: { lang: Lang }) {
+  const c = content[lang];
+
+  // Placeholder for events images
+  const placeholders = [1, 2, 3];
+
+  return (
+    <PageLayout title={c.events.heading}>
+      <RevealGroup>
+        <div className="space-y-16">
+          
+          {/* Intro Text Section */}
+          <section className="max-w-3xl">
+            {c.events.text.split("\n\n").map((paragraph, i) => (
+              <RevealItem key={i}>
+                <p className={`text-lg leading-relaxed ${i === 0 ? "text-xl text-ink font-medium mb-6" : "text-ink-muted mb-4"}`}>
+                  {paragraph}
+                </p>
+              </RevealItem>
+            ))}
+          </section>
+
+          {/* Bento Box Highlights */}
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Highlight 1 - Large (Steel) */}
+            <RevealItem className="md:col-span-2">
+              <div className="h-full p-8 rounded-3xl bg-pastel-blue-bg border-2 border-pastel-blue flex flex-col sm:flex-row items-center sm:items-start gap-6 group hover:shadow-lg hover:shadow-steel/10 transition-all duration-300">
+                <div className="w-20 h-20 shrink-0 rounded-[1.5rem] bg-white border-2 border-pastel-blue flex items-center justify-center group-hover:-translate-y-2 transition-transform duration-500">
+                  <GraduationCap className="w-10 h-10 text-[#3a5570]" />
+                </div>
+                <div className="text-center sm:text-left">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/60 text-[#3a5570] text-xs font-bold uppercase tracking-wider mb-3">
+                    <Star className="w-3 h-3" />
+                    {lang === "es" ? "Evento Principal" : "Main Event"}
+                  </div>
+                  <h3 className="font-heading font-800 text-3xl text-ink mb-2">
+                    {lang === "es" ? "Graduación Anual" : "Annual Graduation"}
+                  </h3>
+                  <p className="text-[#3a5570]/80 font-medium">
+                    {lang === "es" 
+                      ? "Celebrando el esfuerzo y la dedicación de nuestros participantes." 
+                      : "Celebrating the effort and dedication of our participants."}
+                  </p>
+                </div>
+              </div>
+            </RevealItem>
+
+            {/* Highlight 2 - Small (Sage) */}
+            <RevealItem className="md:col-span-1">
+              <div className="h-full p-8 rounded-3xl bg-pastel-green-bg border-2 border-pastel-green flex flex-col items-center text-center gap-4 group hover:shadow-lg hover:shadow-sage/10 transition-all duration-300">
+                <div className="w-16 h-16 rounded-2xl bg-white border-2 border-pastel-green flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <BookOpen className="w-8 h-8 text-[#4a5a3d]" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-700 text-xl text-ink mb-1">
+                    {lang === "es" ? "Manual Educativo" : "Educational Manual"}
+                  </h3>
+                  <p className="text-sm text-[#4a5a3d]/80 font-medium">
+                    {lang === "es" ? "Lanzamiento oficial" : "Official release"}
+                  </p>
+                </div>
+              </div>
+            </RevealItem>
+
+            {/* Highlight 3 - Full width banner (Stone) */}
+            <RevealItem className="md:col-span-3">
+              <div className="p-8 rounded-3xl bg-stone-bg border-2 border-stone flex flex-col sm:flex-row items-center justify-between gap-6 group hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                <div className="absolute -right-10 -top-10 text-white/40 group-hover:scale-110 transition-transform duration-700 pointer-events-none">
+                  <Users size={160} />
+                </div>
+                <div className="relative z-10 flex items-center gap-6 text-center sm:text-left flex-col sm:flex-row">
+                  <div className="w-16 h-16 rounded-full bg-white border-2 border-stone flex items-center justify-center">
+                    <CalendarHeart className="w-8 h-8 text-[#5a5855]" />
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-800 text-2xl text-ink">
+                      {lang === "es" ? "Impacto Comunitario" : "Community Impact"}
+                    </h3>
+                    <p className="text-[#5a5855] font-medium mt-1">
+                      {lang === "es" ? "Jornadas de salud y bienestar para todos." : "Health and wellness days for everyone."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </RevealItem>
+          </section>
+
+          {/* Image Gallery Placeholder */}
+          <section className="space-y-8 border-t-2 border-dashed border-stone/30">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {placeholders.map((idx) => (
+                <RevealItem key={idx}>
+                  <div className="aspect-[4/3] rounded-3xl bg-pastel-blue-bg/40 border-2 border-pastel-blue flex items-center justify-center group overflow-hidden relative shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer">
+                    <div className="absolute inset-0 bg-steel/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="text-center p-6 space-y-3 z-10 transform group-hover:-translate-y-1 transition-transform duration-300">
+                      <div className="w-12 h-12 rounded-full bg-white border-2 border-pastel-blue mx-auto flex items-center justify-center text-[#3a5570]">
+                        <Users size={20} />
+                      </div>
+                      <p className="text-sm font-bold text-[#3a5570] uppercase tracking-wider">
+                        {lang === "es" ? "Foto del evento" : "Event photo"} {idx}
+                      </p>
+                    </div>
+                  </div>
+                </RevealItem>
+              ))}
+            </div>
+          </section>
+
+        </div>
+      </RevealGroup>
+    </PageLayout>
+  );
+}
+
+
+
+================================================
+FILE: pages/FounderPage.tsx
+================================================
+// pages/FounderPage.tsx
+import { content, type Lang } from "../content";
+import PageLayout from "../components/PageLayout";
+import { RevealGroup, RevealItem } from "../components/Reveal";
+import { Quote, User } from "lucide-react";
+
+export default function FounderPage({ lang }: { lang: Lang }) {
+  const c = content[lang];
+  return (
+    <PageLayout title={c.founder.heading}>
+      <RevealGroup>
+        <div className="space-y-16">
+          <section className="flex flex-col md:flex-row gap-12 items-center md:items-start">
+            <RevealItem className="w-full md:w-1/3 flex justify-center shrink-0">
+              <div className="relative group">
+                <div className="absolute -inset-4 bg-steel/20 rounded-full blur-2xl group-hover:bg-steel/30 transition-colors duration-700" />
+                <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-steel-bg flex items-center justify-center">
+                  <User className="w-24 h-24 text-steel" strokeWidth={1.5} />
+                  {/* Future img tag:
+                  <img src="/founder.jpg" alt="Founder" className="w-full h-full object-cover" />
+                  */}
+                </div>
+              </div>
+            </RevealItem>
+
+            <div className="w-full md:w-2/3 space-y-6">
+              {c.founder.description.split("\n\n").map((paragraph, i) => (
+                <RevealItem key={i}>
+                  <p className="text-xl text-ink leading-relaxed font-medium">
+                    {paragraph}
+                  </p>
+                </RevealItem>
+              ))}
+            </div>
+          </section>
+
+          <RevealItem>
+            <hr className="border-steel/10" />
+          </RevealItem>
+
+          <section className="space-y-8 relative">
+            <RevealItem>
+              <div className="flex items-center gap-4 mb-2">
+                <div className="p-3 bg-steel-bg rounded-2xl text-steel">
+                  <Quote size={24} fill="currentColor" className="opacity-40" />
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-heading font-800 text-ink tracking-tight">
+                  {c.founder.messageHeading}
+                </h2>
+              </div>
+            </RevealItem>
+
+            <div className="grid gap-6 bg-steel-bg/30 p-8 sm:p-10 rounded-3xl border border-steel/10">
+              {c.founder.message.split("\n\n").map((paragraph, i) => (
+                <RevealItem key={i}>
+                  <p className="text-lg text-ink-muted leading-relaxed">
+                    {paragraph}
+                  </p>
+                </RevealItem>
+              ))}
+            </div>
+          </section>
+        </div>
+      </RevealGroup>
+    </PageLayout>
+  );
+}
+
+
+
+================================================
 FILE: pages/GalleryPage.tsx
 ================================================
 // pages/GalleryPage.tsx
@@ -1024,12 +1058,6 @@ export default function GalleryPage({ lang }: GalleryPageProps) {
     >
       <div className="max-w-6xl mx-auto px-4">
         <div className="mb-12">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-sage-light/70 hover:text-sage-light mb-6 transition-colors cursor-pointer w-fit"
-          >
-            <ArrowLeft className="w-4 h-4" /> {c.backHome}
-          </Link>
           <h1 className="text-5xl font-heading font-bold text-white mb-2">
             {c.title}
           </h1>
@@ -1113,14 +1141,9 @@ FILE: pages/HomePage.tsx
 ================================================
 // pages/HomePage.tsx
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, Target } from "lucide-react";
+import { Leaf } from "lucide-react";
 import { content, type Lang } from "../content";
-import {
-  pastelColors,
-  sessionIcons,
-  structureIcons,
-  langSwap,
-} from "../constants";
+import { langSwap } from "../constants";
 import { RevealGroup, RevealItem } from "../components/Reveal";
 
 interface HomePageProps {
@@ -1136,242 +1159,433 @@ export default function HomePage({ lang }: HomePageProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center relative overflow-hidden"
     >
-      {/* ───── HERO ───── */}
-      <section id="hero" className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-32 -right-32 w-96 h-96 bg-sage/15 rounded-full blur-3xl" />
-          <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-steel/15 rounded-full blur-3xl" />
-        </div>
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-32 -right-32 w-96 h-96 bg-sage/15 rounded-full blur-3xl" />
+        <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-steel/15 rounded-full blur-3xl" />
+      </div>
 
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 sm:pt-28 sm:pb-24 text-center">
-          <RevealGroup>
-            <RevealItem>
-              <h1 className="font-heading font-900 text-6xl sm:text-8xl lg:text-9xl text-ink tracking-tighter leading-none">
-                {c.hero.title}
-              </h1>
-              <p className="font-heading font-500 text-2xl sm:text-3xl lg:text-4xl text-steel mt-2 tracking-tight">
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pb-20">
+        <RevealGroup>
+          <RevealItem>
+            <h1 className="font-heading font-900 text-7xl sm:text-9xl lg:text-[10rem] text-ink tracking-tighter leading-none mb-4">
+              {c.hero.title}
+            </h1>
+            {c.hero.subtitle && (
+              <p className="font-heading font-500 text-3xl sm:text-4xl lg:text-5xl text-steel tracking-tight">
                 {c.hero.subtitle}
               </p>
-            </RevealItem>
+            )}
+          </RevealItem>
 
+
+          <RevealItem>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="mt-16"
+            >
+              <div className="inline-block p-4 rounded-3xl bg-sage/10 border border-sage/20 backdrop-blur-sm">
+                <Leaf className="w-12 h-12 text-sage animate-pulse" />
+              </div>
+            </motion.div>
+          </RevealItem>
+        </RevealGroup>
+      </div>
+    </motion.main>
+  );
+}
+
+
+
+================================================
+FILE: pages/MissionPage.tsx
+================================================
+// pages/MissionPage.tsx
+import { content, type Lang } from "../content";
+import PageLayout from "../components/PageLayout";
+import { RevealGroup, RevealItem } from "../components/Reveal";
+import { motion } from "framer-motion";
+import { Heart, Compass, Sparkles, Target } from "lucide-react";
+
+const sectionIcons = [Heart, Compass, Sparkles, Target];
+
+export default function MissionPage({ lang }: { lang: Lang }) {
+  const c = content[lang];
+  const paragraphs = c.mission.text.split("\n\n");
+
+  return (
+    <PageLayout title={c.mission.heading}>
+      <RevealGroup>
+        <div className="space-y-14">
+          {/* Lead section — full width, centered */}
+          {paragraphs.length > 0 && (
             <RevealItem>
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.p
-                  key={lang + "-tagline"}
-                  variants={langSwap}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  className="mt-8 text-lg sm:text-xl text-ink-muted max-w-2xl mx-auto leading-relaxed"
-                >
-                  {c.hero.tagline}
-                </motion.p>
-              </AnimatePresence>
+              <div className="text-center space-y-6">
+                <div className="inline-flex p-4 rounded-2xl bg-sage-bg/60 border border-sage/10">
+                  <Heart className="w-8 h-8 text-sage" />
+                </div>
+                <p className=" text-left text-xl sm:text-2xl text-ink leading-relaxed font-medium max-w-2xl mx-auto">
+                  {paragraphs[0]}
+                </p>
+              </div>
             </RevealItem>
+          )}
 
-            <RevealItem>
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={lang + "-why"}
-                  variants={langSwap}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  className="mt-12 max-w-2xl mx-auto text-left bg-white rounded-2xl shadow-lg shadow-forest/5 border border-warm-stone/50 p-8"
-                >
-                  <h3 className="font-heading font-700 text-xl text-ink mb-4">
-                    {c.hero.whyName.heading}
-                  </h3>
-                  <ul className="space-y-3">
-                    {c.hero.whyName.points.map((point, i) => (
-                      <li
-                        key={i}
-                        className="flex gap-3 text-ink-light leading-relaxed"
-                      >
-                        <ChevronRight className="mt-1 w-4 h-4 text-sage flex-shrink-0" />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  {c.hero.whyName.bilingual && (
-                    <p className="mt-6 text-ink-muted text-sm leading-relaxed border-t border-warm-stone/40 pt-4">
-                      {c.hero.whyName.bilingual}
-                    </p>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </RevealItem>
-          </RevealGroup>
-        </div>
-      </section>
+          {/* Middle paragraphs — numbered timeline style */}
+          {paragraphs.length > 1 && (
+            <div className="relative">
+              {/* Vertical line */}
+              <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-px bg-stone/20 hidden sm:block" />
 
-      {/* ───── MISSION ───── */}
-      <section id="mission" className="bg-dark-section text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <RevealGroup>
-            <RevealItem className="text-center mb-12">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-sage/20 text-sage-light text-sm font-medium tracking-wide uppercase mb-6">
-                {lang === "en" ? "Our Purpose" : "Nuestro Propósito"}
-              </span>
-              <h2 className="font-heading font-800 text-3xl sm:text-4xl lg:text-5xl tracking-tight">
-                {c.mission.heading}
-              </h2>
-            </RevealItem>
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={lang + "-mission"}
-                variants={langSwap}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                className="space-y-6"
-              >
-                {c.mission.text.split("\n\n").map((paragraph, i) => (
-                  <RevealItem key={i}>
-                    <p className="text-lg text-white/80 leading-relaxed">
-                      {paragraph}
-                    </p>
-                  </RevealItem>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-          </RevealGroup>
-        </div>
-      </section>
-
-      {/* ───── STRUCTURE ───── */}
-      <section id="structure" className="bg-cream-warm">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <RevealGroup>
-            <RevealItem className="text-center mb-14">
-              <h2 className="font-heading font-800 text-3xl sm:text-4xl lg:text-5xl text-ink tracking-tight">
-                {c.structure.heading}
-              </h2>
-            </RevealItem>
-
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={lang + "-struct"}
-                variants={langSwap}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-              >
-                {c.structure.items.map((item, i) => {
-                  const color = pastelColors[i % pastelColors.length];
+              <div className="space-y-10">
+                {paragraphs.slice(1).map((paragraph, i) => {
                   const Icon =
-                    structureIcons[i % structureIcons.length];
+                    sectionIcons[(i + 1) % sectionIcons.length];
+                  const colors = [
+                    {
+                      ring: "ring-sage/20",
+                      bg: "bg-sage-bg",
+                      text: "text-sage",
+                    },
+                    {
+                      ring: "ring-steel/20",
+                      bg: "bg-steel-bg",
+                      text: "text-steel",
+                    },
+                    {
+                      ring: "ring-pastel-mint/20",
+                      bg: "bg-pastel-mint-bg",
+                      text: "text-pastel-mint",
+                    },
+                    {
+                      ring: "ring-pastel-amber/20",
+                      bg: "bg-pastel-amber-bg",
+                      text: "text-pastel-amber",
+                    },
+                  ];
+                  const color = colors[i % colors.length];
+
                   return (
                     <RevealItem key={i}>
                       <motion.div
-                        whileHover={{ y: -3 }}
-                        className={`rounded-2xl p-6 border ${color.bg} ${color.border} h-full`}
+                        whileHover={{ x: 4 }}
+                        className="flex gap-5 sm:gap-8 items-start"
                       >
-                        <div className="flex items-center gap-3 mb-3">
-                          <div
-                            className={`w-9 h-9 rounded-xl ${color.bg} border ${color.border} flex items-center justify-center`}
-                          >
-                            <Icon
-                              className={`w-[18px] h-[18px] ${color.text}`}
-                            />
-                          </div>
-                          <p
-                            className={`text-xs font-bold uppercase tracking-wider ${color.text}`}
-                          >
-                            {item.label}
+                        {/* Number badge */}
+                        <div
+                          className={`flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-2xl ${color.bg} ring-2 ${color.ring} flex items-center justify-center relative z-10`}
+                        >
+                          <Icon
+                            className={`w-5 h-5 sm:w-6 sm:h-6 ${color.text}`}
+                          />
+                        </div>
+                        <div className="pt-1 sm:pt-3">
+                          <p className="text-lg text-ink-muted leading-relaxed">
+                            {paragraph}
                           </p>
                         </div>
-                        <p className="text-ink font-heading font-600 leading-relaxed">
-                          {item.value}
-                        </p>
                       </motion.div>
                     </RevealItem>
                   );
                 })}
-              </motion.div>
-            </AnimatePresence>
-          </RevealGroup>
+              </div>
+            </div>
+          )}
         </div>
-      </section>
+      </RevealGroup>
+    </PageLayout>
+  );
+}
 
-      {/* ───── SESSIONS ───── */}
-      <section id="sessions" className="bg-cream">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <RevealGroup>
-            <RevealItem className="text-center mb-14">
-              <h2 className="font-heading font-800 text-3xl sm:text-4xl lg:text-5xl text-ink tracking-tight">
-                {c.sessions.heading}
-              </h2>
-            </RevealItem>
 
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={lang + "-sessions"}
-                variants={langSwap}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                className="space-y-6"
-              >
-                {c.sessions.list.map((session, i) => {
-                  const color = pastelColors[i % pastelColors.length];
-                  const Icon =
-                    sessionIcons[session.number] || Target;
-                  return (
-                    <RevealItem key={session.number}>
-                      <div className="rounded-2xl bg-white border border-warm-stone/40 shadow-sm overflow-hidden">
+
+================================================
+FILE: pages/SessionsPage.tsx
+================================================
+// pages/SessionsPage.tsx
+import { Target } from "lucide-react";
+import { content, type Lang } from "../content";
+import { pastelColors, sessionIcons } from "../constants";
+import { RevealGroup, RevealItem } from "../components/Reveal";
+import PageLayout from "../components/PageLayout";
+
+export default function SessionsPage({ lang }: { lang: Lang }) {
+    const c = content[lang];
+    return (
+        <PageLayout title={c.sessions.heading}>
+            <RevealGroup>
+                <div className="space-y-8">
+                    {c.sessions.list.map((session, i) => {
+                        const color = pastelColors[i % pastelColors.length];
+                        const Icon = sessionIcons[session.number] || Target;
+                        return (
+                            <RevealItem key={session.number}>
+                                <div className="rounded-2xl bg-white border border-warm-stone/40 shadow-sm overflow-hidden transition-all hover:shadow-md">
+                                    <div className={`${color.bg} px-6 sm:px-8 py-5 flex items-center gap-4 border-b ${color.border}`}>
+                                        <Icon className={`w-8 h-8 ${color.text}`} />
+                                        <div>
+                                            <p className={`text-sm font-bold ${color.text} uppercase tracking-wider`}>
+                                                {lang === "en" ? `Session ${session.number}` : `Charla ${session.number}`}
+                                            </p>
+                                            <h3 className="font-heading font-700 text-xl sm:text-2xl text-ink">
+                                                {session.title}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div className="px-6 sm:px-8 py-6">
+                                        <div className="mb-4">
+                                            <p className="text-xs font-bold text-ink-muted uppercase mb-1">
+                                                {lang === "en" ? "Goal" : "Objetivo"}
+                                            </p>
+                                            <p className="text-ink-light text-lg">
+                                                {session.goal}
+                                            </p>
+                                        </div>
+                                        <ul className="space-y-3">
+                                            {session.content.map((item, j) => (
+                                                <li key={j} className="flex gap-3 text-ink-light leading-relaxed">
+                                                    <span className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-sage/60" />
+                                                    <span>{item}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </RevealItem>
+                        );
+                    })}
+                </div>
+            </RevealGroup>
+        </PageLayout>
+    );
+}
+
+
+
+================================================
+FILE: pages/StatisticsPage.tsx
+================================================
+// pages/StatisticsPage.tsx
+import { content, type Lang } from "../content";
+import PageLayout from "../components/PageLayout";
+import { RevealGroup, RevealItem } from "../components/Reveal";
+import { BarChart3, TrendingUp, Users, Heart } from "lucide-react";
+
+export default function StatisticsPage({ lang }: { lang: Lang }) {
+  const c = content[lang];
+
+  // Assuming c.statistics.text is a placeholder, we'll create a nice grid
+  const stats = [
+    { icon: Users, value: "+5,000", label: lang === "es" ? "Ejemplo" : "Example" },
+    { icon: Heart, value: "100%", label: lang === "es" ? "Ejemplo" : "Example" },
+    { icon: TrendingUp, value: "45", label: lang === "es" ? "Ejemplo" : "Example" },
+    { icon: BarChart3, value: "12", label: lang === "es" ? "Ejemplo" : "Example" },
+  ];
+
+  return (
+    <PageLayout title={c.statistics.heading}>
+      <RevealGroup>
+        <div className="mb-12">
+          <RevealItem>
+            <p className="text-xl text-ink-muted leading-relaxed text-center max-w-2xl mx-auto">
+              {c.statistics.text}
+            </p>
+          </RevealItem>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
+          {stats.map((stat, i) => {
+            const Icon = stat.icon;
+            return (
+              <RevealItem key={i}>
+                <div className="group p-8 rounded-3xl bg-white border border-steel/20 shadow-lg shadow-steel/5 hover:bg-steel hover:border-steel transition-colors duration-500 flex flex-col items-center justify-center text-center gap-4 h-full">
+                  <div className="p-4 bg-steel-bg rounded-full text-steel group-hover:bg-white/20 group-hover:text-white transition-colors duration-500">
+                    <Icon size={32} />
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-900 text-5xl text-ink group-hover:text-white transition-colors duration-500 mb-2">
+                      {stat.value}
+                    </h3>
+                    <p className="text-steel font-bold uppercase tracking-widest text-sm group-hover:text-steel-bg transition-colors duration-500">
+                      {stat.label}
+                    </p>
+                  </div>
+                </div>
+              </RevealItem>
+            );
+          })}
+        </div>
+      </RevealGroup>
+    </PageLayout>
+  );
+}
+
+
+
+================================================
+FILE: pages/StructurePage.tsx
+================================================
+// pages/StructurePage.tsx
+import { motion } from "framer-motion";
+import { content, type Lang } from "../content";
+import { pastelColors, structureIcons } from "../constants";
+import { RevealGroup, RevealItem } from "../components/Reveal";
+import PageLayout from "../components/PageLayout";
+
+export default function StructurePage({ lang }: { lang: Lang }) {
+  const c = content[lang];
+
+  return (
+    <PageLayout title={c.structure.heading}>
+      <RevealGroup>
+        <div className="relative max-w-3xl mx-auto py-4">
+          {/* Vertical connecting line */}
+          <div className="absolute left-[2.35rem] sm:left-[2.85rem] top-8 bottom-8 w-1 bg-stone-bg border-x border-stone/50 rounded-full hidden sm:block z-0" />
+
+          <div className="space-y-8 sm:space-y-12">
+            {c.structure.items.map((item, i) => {
+              const color = pastelColors[i % pastelColors.length];
+              const Icon = structureIcons[i % structureIcons.length];
+
+              return (
+                <RevealItem key={i}>
+                  <div className="relative flex flex-col sm:flex-row items-start gap-5 sm:gap-8 group">
+                    {/* Icon / Node */}
+                    <div className="relative z-10 shrink-0">
+                      <div
+                        className={`w-20 h-20 sm:w-24 sm:h-24 rounded-[1.5rem] bg-white border-2 ${color.border} shadow-sm flex items-center justify-center group-hover:-translate-y-1 transition-transform duration-300`}
+                      >
                         <div
-                          className={`${color.bg} px-6 sm:px-8 py-5 flex items-center gap-4 border-b ${color.border}`}
+                          className={`absolute inset-2 sm:inset-2.5 rounded-xl ${color.bg} flex items-center justify-center`}
                         >
                           <Icon
-                            className={`w-8 h-8 ${color.text}`}
+                            className={`w-8 h-8 sm:w-10 sm:h-10 ${color.text} group-hover:scale-110 transition-transform duration-300`}
                           />
-                          <div>
-                            <p
-                              className={`text-sm font-bold ${color.text} uppercase tracking-wider`}
-                            >
-                              {lang === "en"
-                                ? `Session ${session.number}`
-                                : `Charla ${session.number}`}
-                            </p>
-                            <h3 className="font-heading font-700 text-xl sm:text-2xl text-ink">
-                              {session.title}
-                            </h3>
-                          </div>
-                        </div>
-                        <div className="px-6 sm:px-8 py-6">
-                          <div className="mb-4">
-                            <p className="text-xs font-bold text-ink-muted uppercase mb-1">
-                              {lang === "en" ? "Goal" : "Objetivo"}
-                            </p>
-                            <p className="text-ink-light">
-                              {session.goal}
-                            </p>
-                          </div>
-                          <ul className="space-y-2">
-                            {session.content.map((item, j) => (
-                              <li
-                                key={j}
-                                className="flex gap-3 text-sm text-ink-light"
-                              >
-                                <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-sage/60" />
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
                         </div>
                       </div>
-                    </RevealItem>
-                  );
-                })}
-              </motion.div>
-            </AnimatePresence>
-          </RevealGroup>
+                    </div>
+
+                    {/* Content Card */}
+                    <div className="flex-1 w-full">
+                      <motion.div
+                        whileHover={{ y: -4 }}
+                        className={`p-6 sm:p-8 rounded-3xl bg-white border-2 ${color.border} shadow-sm relative overflow-hidden h-full group-hover:shadow-md transition-all duration-300`}
+                      >
+                        <div
+                          className={`absolute top-0 right-0 w-32 h-32 rounded-bl-full opacity-40 pointer-events-none ${color.bg}`}
+                        />
+                        <div className="relative z-10">
+                          <div className="flex items-center gap-4 mb-3">
+                            <span className="text-3xl font-heading font-900 text-stone/40">
+                              {(i + 1).toString().padStart(2, "0")}
+                            </span>
+                            <h3
+                              className={`text-sm font-bold uppercase tracking-widest ${color.text}`}
+                            >
+                              {item.label}
+                            </h3>
+                          </div>
+                          <p className="text-xl sm:text-2xl font-heading font-600 text-ink leading-relaxed">
+                            {item.value}
+                          </p>
+                        </div>
+                      </motion.div>
+                    </div>
+                  </div>
+                </RevealItem>
+              );
+            })}
+          </div>
         </div>
-      </section>
-    </motion.main>
+      </RevealGroup>
+    </PageLayout>
+  );
+}
+
+
+
+================================================
+FILE: pages/TestimoniesPage.tsx
+================================================
+// pages/TestimoniesPage.tsx
+import { content, type Lang } from "../content";
+import PageLayout from "../components/PageLayout";
+import { RevealGroup, RevealItem } from "../components/Reveal";
+import { Quote } from "lucide-react";
+
+export default function TestimoniesPage({ lang }: { lang: Lang }) {
+    const c = content[lang];
+    return (
+        <PageLayout title={c.testimonies.heading}>
+            <RevealGroup>
+                <div className="grid gap-8 md:grid-cols-1 max-w-2xl mx-auto">
+                    {c.testimonies.list.map((testimony, i) => (
+                        <RevealItem key={i}>
+                            <div className="relative bg-white p-8 sm:p-10 rounded-3xl border border-warm-stone/20 shadow-xl shadow-forest/5 hover:shadow-2xl hover:shadow-forest/10 transition-all duration-500 group">
+                                <div className="absolute -top-4 -left-4 p-4 bg-sage rounded-2xl text-white shadow-lg shadow-sage/20 group-hover:scale-110 transition-transform duration-500">
+                                    <Quote size={24} fill="currentColor" />
+                                </div>
+                                <div className="space-y-6">
+                                    <p className="text-xl sm:text-2xl text-ink leading-relaxed font-medium italic">
+                                        "{testimony.text}"
+                                    </p>
+                                    <div className="flex items-center gap-4 pt-4 border-t border-stone/10">
+                                        <div className="w-12 h-12 rounded-full bg-sage-bg flex items-center justify-center text-sage font-bold text-lg">
+                                            {testimony.author.charAt(0)}
+                                        </div>
+                                        <div>
+                                            <p className="font-heading font-bold text-ink text-lg">
+                                                {testimony.author}
+                                            </p>
+                                            <p className="text-sm text-ink-muted uppercase tracking-wider font-semibold">
+                                                {lang === "es" ? "Estudiante" : "Student"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </RevealItem>
+                    ))}
+                </div>
+            </RevealGroup>
+        </PageLayout>
+    );
+}
+
+
+
+================================================
+FILE: pages/VolunteersPage.tsx
+================================================
+// pages/VolunteersPage.tsx
+import { content, type Lang } from "../content";
+import PageLayout from "../components/PageLayout";
+import { RevealGroup, RevealItem } from "../components/Reveal";
+
+export default function VolunteersPage({ lang }: { lang: Lang }) {
+  const c = content[lang];
+  // Placeholders for volunteer images
+  const placeholders = [1, 2, 3, 4, 5, 6, 7, 8];
+
+  return (
+    <PageLayout title={c.volunteers.heading}>
+      <RevealGroup className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+        {placeholders.map((idx) => (
+          <RevealItem key={idx} className="break-inside-avoid">
+            <div className="relative group overflow-hidden rounded-2xl bg-steel-bg/30 border border-steel/10 aspect-[3/4] flex items-center justify-center">
+              {/* Replace with actual <img> tags once you have the images */}
+              <div className="absolute inset-0 bg-gradient-to-t from-steel/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+              <div className="text-steel/40 font-heading font-bold text-xl group-hover:scale-110 transition-transform duration-500">
+                Volunteer {idx}
+              </div>
+            </div>
+          </RevealItem>
+        ))}
+      </RevealGroup>
+    </PageLayout>
   );
 }
 
