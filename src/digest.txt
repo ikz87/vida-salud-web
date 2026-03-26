@@ -8,11 +8,13 @@ Directory structure:
     ├── .gitingestignore
     ├── components/
     │   ├── Dropdown.tsx
+    │   ├── Lightbox.tsx
     │   ├── PageLayout.tsx
     │   ├── Reveal.tsx
     │   └── ScrollToTop.tsx
     ├── data/
-    │   └── drive-manifest.json
+    │   ├── drive-manifest.json
+    │   └── manifest.ts
     └── pages/
         ├── ArticlesPage.tsx
         ├── EventsPage.tsx
@@ -573,6 +575,58 @@ export default function Dropdown({ title, items, isGallery }: DropdownProps) {
 
 
 ================================================
+FILE: components/Lightbox.tsx
+================================================
+import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+
+interface LightboxProps {
+  src: string | null;
+  onClose: () => void;
+}
+
+export default function Lightbox({ src, onClose }: LightboxProps) {
+  return createPortal(
+    <AnimatePresence>
+      {src && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
+        >
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            className="absolute top-6 right-6 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-[110] cursor-pointer"
+          >
+            <X className="w-8 h-8" />
+          </motion.button>
+          <motion.img
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            src={src}
+            alt="Full size"
+            className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body
+  );
+}
+
+
+
+================================================
 FILE: components/PageLayout.tsx
 ================================================
 // components/PageLayout.tsx
@@ -726,20 +780,176 @@ export default function ScrollToTop() {
 FILE: data/drive-manifest.json
 ================================================
 {
+  "galeria": {
+    "Videos": [
+      {
+        "type": "video",
+        "name": "78274a5a-8caf-405e-9d49-efed04b0cf3c.mov",
+        "embedUrl": "https://drive.google.com/file/d/1SSVyYKC3vJ2RwcfrciYE5mGC2FHGUqQd/preview"
+      },
+      {
+        "type": "video",
+        "name": "IMG_9322.MOV",
+        "embedUrl": "https://drive.google.com/file/d/155zAYNqqPPE6XlvgdeQ0WmFJOv5wVrYQ/preview"
+      },
+      {
+        "type": "video",
+        "name": "IMG_9519.MOV",
+        "embedUrl": "https://drive.google.com/file/d/1FFk8H3PLtOqKpD2w7MUXnTjuBjXfpHG9/preview"
+      },
+      {
+        "type": "video",
+        "name": "IMG_9559.MOV",
+        "embedUrl": "https://drive.google.com/file/d/1HCuTFKt2W8YxzAAaILPP-_ne6vou3mSR/preview"
+      },
+      {
+        "type": "video",
+        "name": "IMG_1582.mov",
+        "embedUrl": "https://drive.google.com/file/d/1hP6KdyTrubTU-6UHYLKuZflcODawcaly/preview"
+      }
+    ],
+    "Categoria 1": [
+      {
+        "type": "image",
+        "name": "5da510e3-f8c4-4b1b-a3cc-6f73116c92d3.JPG",
+        "path": "/drive/Galeria/Categoria_1/5da510e3-f8c4-4b1b-a3cc-6f73116c92d3.webp"
+      },
+      {
+        "type": "image",
+        "name": "5f6714b7-bb10-493b-ae9a-88dcfe5777c1.JPG",
+        "path": "/drive/Galeria/Categoria_1/5f6714b7-bb10-493b-ae9a-88dcfe5777c1.webp"
+      },
+      {
+        "type": "image",
+        "name": "96fdad2c-fc3d-4136-8964-b71ebb373de8.JPG",
+        "path": "/drive/Galeria/Categoria_1/96fdad2c-fc3d-4136-8964-b71ebb373de8.webp"
+      },
+      {
+        "type": "image",
+        "name": "20b6b567-c99c-4a5a-8ec3-f607bda579e5.JPG",
+        "path": "/drive/Galeria/Categoria_1/20b6b567-c99c-4a5a-8ec3-f607bda579e5.webp"
+      },
+      {
+        "type": "image",
+        "name": "27BA3AE1-5EFF-4518-BF76-DD3514E08290.HEIC",
+        "path": "/drive/Galeria/Categoria_1/27BA3AE1-5EFF-4518-BF76-DD3514E08290.webp"
+      },
+      {
+        "type": "image",
+        "name": "C26D3AFC-5AC9-4153-8C97-47EAB5F3B06E.HEIC",
+        "path": "/drive/Galeria/Categoria_1/C26D3AFC-5AC9-4153-8C97-47EAB5F3B06E.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.04.jpeg",
+        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.04.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.04 (2).jpeg",
+        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.04__2_.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.04 (1).jpeg",
+        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.04__1_.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.03.jpeg",
+        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.03.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.03 (2).jpeg",
+        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.03__2_.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.03 (1).jpeg",
+        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.03__1_.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.38.59.jpeg",
+        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.38.59.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.36.47.jpeg",
+        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.36.47.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.35.49.jpeg",
+        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.35.49.webp"
+      }
+    ]
+  },
   "voluntarios": [
     {
       "type": "image",
+      "name": "B55B92D2-F09E-4BFA-BC0F-4B8E3BC35972.HEIC",
+      "path": "/drive/Voluntarios/B55B92D2-F09E-4BFA-BC0F-4B8E3BC35972.webp"
+    },
+    {
+      "type": "image",
       "name": "Screenshot 2026-03-24 at 6.39.13 PM.png",
-      "path": "/drive/Voluntarios/Screenshot_2026-03-24_at_6.39.13_PM.png"
+      "path": "/drive/Voluntarios/Screenshot_2026-03-24_at_6.39.13_PM.webp"
+    },
+    {
+      "type": "image",
+      "name": "EB44CD92-21EF-4B88-AB08-904B81D578BE.HEIC",
+      "path": "/drive/Voluntarios/EB44CD92-21EF-4B88-AB08-904B81D578BE.webp"
     },
     {
       "type": "image",
       "name": "WhatsApp Image 2026-03-10 at 20.38.22.jpeg",
-      "path": "/drive/Voluntarios/WhatsApp_Image_2026-03-10_at_20.38.22.jpeg"
+      "path": "/drive/Voluntarios/WhatsApp_Image_2026-03-10_at_20.38.22.webp"
     }
   ],
-  "eventos": []
+  "eventos": [
+    {
+      "type": "image",
+      "name": "AF4AC3BA-952C-4DFE-B7E1-B15C66BDF591.HEIC",
+      "path": "/drive/Eventos/AF4AC3BA-952C-4DFE-B7E1-B15C66BDF591.webp"
+    },
+    {
+      "type": "image",
+      "name": "E0FEDA65-880E-4B9F-ADDA-5632DD4D40D2.HEIC",
+      "path": "/drive/Eventos/E0FEDA65-880E-4B9F-ADDA-5632DD4D40D2.webp"
+    }
+  ]
 }
+
+
+================================================
+FILE: data/manifest.ts
+================================================
+import manifest from "./drive-manifest.json";
+
+export interface MediaImage {
+  type: "image";
+  name: string;
+  path: string;
+}
+
+export interface MediaVideo {
+  type: "video";
+  name: string;
+  embedUrl: string;
+}
+
+export type MediaEntry = MediaImage | MediaVideo;
+
+export interface DriveManifest {
+  galeria: Record<string, MediaEntry[]>;
+  voluntarios: MediaImage[];
+  eventos: MediaImage[];
+}
+
+export const driveManifest = manifest as unknown as DriveManifest;
+
 
 
 ================================================
@@ -811,124 +1021,143 @@ export default function ArticlesPage({ lang }: { lang: Lang }) {
 ================================================
 FILE: pages/EventsPage.tsx
 ================================================
-// pages/EventsPage.tsx
+import { useState } from "react";
+import {
+  GraduationCap,
+  BookOpen,
+  Users,
+  Star,
+  CalendarHeart,
+} from "lucide-react";
 import { content, type Lang } from "../content";
+import { driveManifest } from "../data/manifest";
 import PageLayout from "../components/PageLayout";
+import Lightbox from "../components/Lightbox";
 import { RevealGroup, RevealItem } from "../components/Reveal";
-import { GraduationCap, BookOpen, Users, Star, CalendarHeart } from "lucide-react";
 
 export default function EventsPage({ lang }: { lang: Lang }) {
   const c = content[lang];
-
-  // Placeholder for events images
-  const placeholders = [1, 2, 3];
+  const images = driveManifest.eventos;
+  const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <PageLayout title={c.events.heading}>
-      <RevealGroup>
-        <div className="space-y-16">
-          
-          {/* Intro Text Section */}
-          <section className="max-w-3xl">
-            {c.events.text.split("\n\n").map((paragraph, i) => (
-              <RevealItem key={i}>
-                <p className={`text-lg leading-relaxed ${i === 0 ? "text-xl text-ink font-medium mb-6" : "text-ink-muted mb-4"}`}>
-                  {paragraph}
-                </p>
-              </RevealItem>
-            ))}
-          </section>
-
-          {/* Bento Box Highlights */}
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Highlight 1 - Large (Steel) */}
-            <RevealItem className="md:col-span-2">
-              <div className="h-full p-8 rounded-3xl bg-pastel-blue-bg border-2 border-pastel-blue flex flex-col sm:flex-row items-center sm:items-start gap-6 group hover:shadow-lg hover:shadow-steel/10 transition-all duration-300">
-                <div className="w-20 h-20 shrink-0 rounded-[1.5rem] bg-white border-2 border-pastel-blue flex items-center justify-center group-hover:-translate-y-2 transition-transform duration-500">
-                  <GraduationCap className="w-10 h-10 text-[#3a5570]" />
-                </div>
-                <div className="text-center sm:text-left">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/60 text-[#3a5570] text-xs font-bold uppercase tracking-wider mb-3">
-                    <Star className="w-3 h-3" />
-                    {lang === "es" ? "Evento Principal" : "Main Event"}
-                  </div>
-                  <h3 className="font-heading font-800 text-3xl text-ink mb-2">
-                    {lang === "es" ? "Graduación Anual" : "Annual Graduation"}
-                  </h3>
-                  <p className="text-[#3a5570]/80 font-medium">
-                    {lang === "es" 
-                      ? "Celebrando el esfuerzo y la dedicación de nuestros participantes." 
-                      : "Celebrating the effort and dedication of our participants."}
+    <>
+      <PageLayout title={c.events.heading}>
+        <RevealGroup>
+          <div className="space-y-16">
+            {/* Intro Text */}
+            <section className="max-w-3xl">
+              {c.events.text.split("\n\n").map((paragraph, i) => (
+                <RevealItem key={i}>
+                  <p
+                    className={`text-lg leading-relaxed ${i === 0 ? "text-xl text-ink font-medium mb-6" : "text-ink-muted mb-4"}`}
+                  >
+                    {paragraph}
                   </p>
-                </div>
-              </div>
-            </RevealItem>
+                </RevealItem>
+              ))}
+            </section>
 
-            {/* Highlight 2 - Small (Sage) */}
-            <RevealItem className="md:col-span-1">
-              <div className="h-full p-8 rounded-3xl bg-pastel-green-bg border-2 border-pastel-green flex flex-col items-center text-center gap-4 group hover:shadow-lg hover:shadow-sage/10 transition-all duration-300">
-                <div className="w-16 h-16 rounded-2xl bg-white border-2 border-pastel-green flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                  <BookOpen className="w-8 h-8 text-[#4a5a3d]" />
-                </div>
-                <div>
-                  <h3 className="font-heading font-700 text-xl text-ink mb-1">
-                    {lang === "es" ? "Manual Educativo" : "Educational Manual"}
-                  </h3>
-                  <p className="text-sm text-[#4a5a3d]/80 font-medium">
-                    {lang === "es" ? "Lanzamiento oficial" : "Official release"}
-                  </p>
-                </div>
-              </div>
-            </RevealItem>
-
-            {/* Highlight 3 - Full width banner (Stone) */}
-            <RevealItem className="md:col-span-3">
-              <div className="p-8 rounded-3xl bg-stone-bg border-2 border-stone flex flex-col sm:flex-row items-center justify-between gap-6 group hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                <div className="absolute -right-10 -top-10 text-white/40 group-hover:scale-110 transition-transform duration-700 pointer-events-none">
-                  <Users size={160} />
-                </div>
-                <div className="relative z-10 flex items-center gap-6 text-center sm:text-left flex-col sm:flex-row">
-                  <div className="w-16 h-16 rounded-full bg-white border-2 border-stone flex items-center justify-center">
-                    <CalendarHeart className="w-8 h-8 text-[#5a5855]" />
+            {/* Bento Highlights */}
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <RevealItem className="md:col-span-2">
+                <div className="h-full p-8 rounded-3xl bg-pastel-blue-bg border-2 border-pastel-blue flex flex-col sm:flex-row items-center sm:items-start gap-6 group hover:shadow-lg hover:shadow-steel/10 transition-all duration-300">
+                  <div className="w-20 h-20 shrink-0 rounded-[1.5rem] bg-white border-2 border-pastel-blue flex items-center justify-center group-hover:-translate-y-2 transition-transform duration-500">
+                    <GraduationCap className="w-10 h-10 text-[#3a5570]" />
                   </div>
-                  <div>
-                    <h3 className="font-heading font-800 text-2xl text-ink">
-                      {lang === "es" ? "Impacto Comunitario" : "Community Impact"}
+                  <div className="text-center sm:text-left">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/60 text-[#3a5570] text-xs font-bold uppercase tracking-wider mb-3">
+                      <Star className="w-3 h-3" />
+                      {lang === "es" ? "Evento Principal" : "Main Event"}
+                    </div>
+                    <h3 className="font-heading font-800 text-3xl text-ink mb-2">
+                      {lang === "es"
+                        ? "Graduación Anual"
+                        : "Annual Graduation"}
                     </h3>
-                    <p className="text-[#5a5855] font-medium mt-1">
-                      {lang === "es" ? "Jornadas de salud y bienestar para todos." : "Health and wellness days for everyone."}
+                    <p className="text-[#3a5570]/80 font-medium">
+                      {lang === "es"
+                        ? "Celebrando el esfuerzo y la dedicación de nuestros participantes."
+                        : "Celebrating the effort and dedication of our participants."}
                     </p>
                   </div>
                 </div>
-              </div>
-            </RevealItem>
-          </section>
+              </RevealItem>
 
-          {/* Image Gallery Placeholder */}
-          <section className="space-y-8 border-t-2 border-dashed border-stone/30">
+              <RevealItem className="md:col-span-1">
+                <div className="h-full p-8 rounded-3xl bg-pastel-green-bg border-2 border-pastel-green flex flex-col items-center text-center gap-4 group hover:shadow-lg hover:shadow-sage/10 transition-all duration-300">
+                  <div className="w-16 h-16 rounded-2xl bg-white border-2 border-pastel-green flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                    <BookOpen className="w-8 h-8 text-[#4a5a3d]" />
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-700 text-xl text-ink mb-1">
+                      {lang === "es"
+                        ? "Manual Educativo"
+                        : "Educational Manual"}
+                    </h3>
+                    <p className="text-sm text-[#4a5a3d]/80 font-medium">
+                      {lang === "es"
+                        ? "Lanzamiento oficial"
+                        : "Official release"}
+                    </p>
+                  </div>
+                </div>
+              </RevealItem>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {placeholders.map((idx) => (
-                <RevealItem key={idx}>
-                  <div className="aspect-[4/3] rounded-3xl bg-pastel-blue-bg/40 border-2 border-pastel-blue flex items-center justify-center group overflow-hidden relative shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer">
-                    <div className="absolute inset-0 bg-steel/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="text-center p-6 space-y-3 z-10 transform group-hover:-translate-y-1 transition-transform duration-300">
-                      <div className="w-12 h-12 rounded-full bg-white border-2 border-pastel-blue mx-auto flex items-center justify-center text-[#3a5570]">
-                        <Users size={20} />
-                      </div>
-                      <p className="text-sm font-bold text-[#3a5570] uppercase tracking-wider">
-                        {lang === "es" ? "Foto del evento" : "Event photo"} {idx}
+              <RevealItem className="md:col-span-3">
+                <div className="p-8 rounded-3xl bg-stone-bg border-2 border-stone flex flex-col sm:flex-row items-center justify-between gap-6 group hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                  <div className="absolute -right-10 -top-10 text-white/40 group-hover:scale-110 transition-transform duration-700 pointer-events-none">
+                    <Users size={160} />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-6 text-center sm:text-left flex-col sm:flex-row">
+                    <div className="w-16 h-16 rounded-full bg-white border-2 border-stone flex items-center justify-center">
+                      <CalendarHeart className="w-8 h-8 text-[#5a5855]" />
+                    </div>
+                    <div>
+                      <h3 className="font-heading font-800 text-2xl text-ink">
+                        {lang === "es"
+                          ? "Impacto Comunitario"
+                          : "Community Impact"}
+                      </h3>
+                      <p className="text-[#5a5855] font-medium mt-1">
+                        {lang === "es"
+                          ? "Jornadas de salud y bienestar para todos."
+                          : "Health and wellness days for everyone."}
                       </p>
                     </div>
                   </div>
-                </RevealItem>
-              ))}
-            </div>
-          </section>
+                </div>
+              </RevealItem>
+            </section>
 
-        </div>
-      </RevealGroup>
-    </PageLayout>
+            {/* Event Photos */}
+            {images.length > 0 && (
+              <section className="space-y-8 border-t-2 border-dashed border-stone/30 pt-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {images.map((img, i) => (
+                    <RevealItem key={i}>
+                      <div
+                        onClick={() => setSelected(img.path)}
+                        className="aspect-[4/3] rounded-3xl overflow-hidden border-2 border-pastel-blue group relative shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+                      >
+                        <img
+                          src={img.path}
+                          alt={img.name}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-steel/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      </div>
+                    </RevealItem>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
+        </RevealGroup>
+      </PageLayout>
+      <Lightbox src={selected} onClose={() => setSelected(null)} />
+    </>
   );
 }
 
@@ -1010,24 +1239,26 @@ export default function FounderPage({ lang }: { lang: Lang }) {
 ================================================
 FILE: pages/GalleryPage.tsx
 ================================================
-// pages/GalleryPage.tsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, X } from "lucide-react";
-import { Link } from "react-router-dom";
-import { galleryImages } from "../gallery-data";
+import { X } from "lucide-react";
 import { content, type Lang } from "../content";
+import { driveManifest, type MediaEntry } from "../data/manifest";
 import { RevealGroup, RevealItem } from "../components/Reveal";
 
-interface GalleryPageProps {
-  lang: Lang;
-}
-
-export default function GalleryPage({ lang }: GalleryPageProps) {
-  const [selectedImage, setSelectedImage] = useState<string | null>(
-    null,
-  );
+export default function GalleryPage({ lang }: { lang: Lang }) {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const c = content[lang].gallery;
+
+  const categories = useMemo(() => {
+    return Object.entries(driveManifest.galeria);
+  }, []);
+
+  const [activeTab, setActiveTab] = useState(() => categories[0]?.[0] ?? "");
+
+  const activeEntries: MediaEntry[] = useMemo(() => {
+    return driveManifest.galeria[activeTab] ?? [];
+  }, [activeTab]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -1038,11 +1269,7 @@ export default function GalleryPage({ lang }: GalleryPageProps) {
   }, []);
 
   useEffect(() => {
-    if (selectedImage) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = selectedImage ? "hidden" : "unset";
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -1064,32 +1291,73 @@ export default function GalleryPage({ lang }: GalleryPageProps) {
           <p className="text-mist text-lg">{c.subtitle}</p>
         </div>
 
-        <RevealGroup className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-          {galleryImages.map((src, i) => (
-            <RevealItem key={i} className="break-inside-avoid">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                onClick={() => setSelectedImage(src)}
-                className="relative group overflow-hidden rounded-2xl bg-white/5 border border-sage/20 cursor-pointer"
+        {/* Tabs */}
+        {categories.length > 1 && (
+          <div className="flex flex-wrap gap-2 mb-10">
+            {categories.map(([name]) => (
+              <button
+                key={name}
+                onClick={() => setActiveTab(name)}
+                className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all cursor-pointer ${
+                  activeTab === name
+                    ? "bg-white text-forest"
+                    : "bg-white/10 text-white/70 hover:bg-white/20 hover:text-white"
+                }`}
               >
-                <img
-                  src={`/gallery/${src}`}
-                  alt={`Gallery ${i}`}
-                  className="w-full h-auto object-cover group-hover:grayscale-0 transition-all duration-500"
-                  onError={(e) =>
-                    (e.currentTarget.src =
-                      "https://placehold.co/600x400/2a3b27/white?text=Media+Coming+Soon")
-                  }
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-forest/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                  <span className="text-white text-sm font-medium">
-                    LiveWell Session Snapshot
-                  </span>
-                </div>
-              </motion.div>
-            </RevealItem>
-          ))}
-        </RevealGroup>
+                {name}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Media Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25 }}
+          >
+            <RevealGroup className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+              {activeEntries.map((entry, i) => (
+                <RevealItem key={i} className="break-inside-avoid">
+                  {entry.type === "image" ? (
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      onClick={() => setSelectedImage(entry.path)}
+                      className="relative group overflow-hidden rounded-2xl bg-white/5 border border-sage/20 cursor-pointer"
+                    >
+                      <img
+                        src={entry.path}
+                        alt={entry.name}
+                        className="w-full h-auto object-cover transition-all duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-forest/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <span className="text-white text-sm font-medium">
+                          LiveWell
+                        </span>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <div className="relative overflow-hidden rounded-2xl bg-white/5 border border-sage/20">
+                      <div className="aspect-video">
+                        <iframe
+                          src={entry.embedUrl}
+                          title={entry.name}
+                          className="w-full h-full"
+                          allow="autoplay; encrypted-media"
+                          allowFullScreen
+                        />
+                      </div>
+                    </div>
+                  )}
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Fullscreen Modal */}
@@ -1100,7 +1368,7 @@ export default function GalleryPage({ lang }: GalleryPageProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-[100] preserve-3d bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
           >
             <motion.button
               whileTap={{ scale: 0.9 }}
@@ -1108,21 +1376,16 @@ export default function GalleryPage({ lang }: GalleryPageProps) {
                 e.stopPropagation();
                 setSelectedImage(null);
               }}
-              className="absolute top-6 right-6 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-[110] hover:cursor-pointer"
+              className="absolute top-6 right-6 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-[110] cursor-pointer"
             >
               <X className="w-8 h-8" />
             </motion.button>
-
             <motion.img
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              transition={{
-                type: "spring",
-                damping: 25,
-                stiffness: 300,
-              }}
-              src={`/gallery/${selectedImage}`}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              src={selectedImage}
               alt="Full size"
               className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
               onClick={(e) => e.stopPropagation()}
@@ -1560,32 +1823,42 @@ export default function TestimoniesPage({ lang }: { lang: Lang }) {
 ================================================
 FILE: pages/VolunteersPage.tsx
 ================================================
-// pages/VolunteersPage.tsx
+import { useState } from "react";
 import { content, type Lang } from "../content";
+import { driveManifest } from "../data/manifest";
 import PageLayout from "../components/PageLayout";
+import Lightbox from "../components/Lightbox";
 import { RevealGroup, RevealItem } from "../components/Reveal";
 
 export default function VolunteersPage({ lang }: { lang: Lang }) {
   const c = content[lang];
-  // Placeholders for volunteer images
-  const placeholders = [1, 2, 3, 4, 5, 6, 7, 8];
+  const images = driveManifest.voluntarios;
+  const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <PageLayout title={c.volunteers.heading}>
-      <RevealGroup className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-        {placeholders.map((idx) => (
-          <RevealItem key={idx} className="break-inside-avoid">
-            <div className="relative group overflow-hidden rounded-2xl bg-steel-bg/30 border border-steel/10 aspect-[3/4] flex items-center justify-center">
-              {/* Replace with actual <img> tags once you have the images */}
-              <div className="absolute inset-0 bg-gradient-to-t from-steel/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-              <div className="text-steel/40 font-heading font-bold text-xl group-hover:scale-110 transition-transform duration-500">
-                Volunteer {idx}
+    <>
+      <PageLayout title={c.volunteers.heading}>
+        <RevealGroup className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+          {images.map((img, i) => (
+            <RevealItem key={i} className="break-inside-avoid">
+              <div
+                onClick={() => setSelected(img.path)}
+                className="relative group overflow-hidden rounded-2xl bg-steel-bg/30 border border-steel/10 cursor-pointer"
+              >
+                <img
+                  src={img.path}
+                  alt={img.name}
+                  className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-steel/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
               </div>
-            </div>
-          </RevealItem>
-        ))}
-      </RevealGroup>
-    </PageLayout>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+      </PageLayout>
+      <Lightbox src={selected} onClose={() => setSelected(null)} />
+    </>
   );
 }
 
