@@ -1,4 +1,5 @@
 {
+  "assets": [],
   "galeria": {
     "Videos": [
       {
@@ -28,6 +29,16 @@
       }
     ],
     "Categoria 1": [
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-04-13 at 18.02.49.jpeg",
+        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-04-13_at_18.02.49.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-04-14 at 10.45.00.jpeg",
+        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-04-14_at_10.45.00.webp"
+      },
       {
         "type": "image",
         "name": "5da510e3-f8c4-4b1b-a3cc-6f73116c92d3.JPG",

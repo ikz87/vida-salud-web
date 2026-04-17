@@ -14,11 +14,8 @@ export default function FounderPage({ lang }: { lang: Lang }) {
             <RevealItem className="w-full md:w-1/3 flex justify-center shrink-0">
               <div className="relative group">
                 <div className="absolute -inset-4 bg-steel/20 rounded-full blur-2xl group-hover:bg-steel/30 transition-colors duration-700" />
-                <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-steel-bg flex items-center justify-center">
-                  <User className="w-24 h-24 text-steel" strokeWidth={1.5} />
-                  {/* Future img tag:
-                  <img src="/founder.jpg" alt="Founder" className="w-full h-full object-cover" />
-                  */}
+                <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full border-white overflow-hidden bg-steel-bg flex items-center justify-center">
+                  <img src="/images/ariana.jpeg" alt="Founder" className="w-full h-full object-cover" />
                 </div>
               </div>
             </RevealItem>
