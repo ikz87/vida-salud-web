@@ -5,8 +5,14 @@ import { content, type Lang } from "../content";
 import { driveManifest, type MediaEntry } from "../data/manifest";
 import { RevealGroup, RevealItem } from "../components/Reveal";
 
+function driveFileId(embedUrl: string) {
+  const m = embedUrl.match(/\/d\/([^/]+)\//);
+  return m?.[1] ?? "";
+}
+
 export default function GalleryPage({ lang }: { lang: Lang }) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const c = content[lang].gallery;
 
   const categories = useMemo(() => {
@@ -21,18 +27,22 @@ export default function GalleryPage({ lang }: { lang: Lang }) {
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedImage(null);
+      if (e.key === "Escape") {
+        setSelectedImage(null);
+        setSelectedVideo(null);
+      }
     };
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = selectedImage ? "hidden" : "unset";
+    document.body.style.overflow =
+      selectedImage || selectedVideo ? "hidden" : "unset";
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [selectedImage]);
+  }, [selectedImage, selectedVideo]);
 
   return (
     <motion.main
@@ -50,7 +60,6 @@ export default function GalleryPage({ lang }: { lang: Lang }) {
           <p className="text-mist text-lg">{c.subtitle}</p>
         </div>
 
-        {/* Tabs */}
         {categories.length > 1 && (
           <div className="flex flex-wrap gap-2 mb-10">
             {categories.map(([name]) => (
@@ -69,7 +78,6 @@ export default function GalleryPage({ lang }: { lang: Lang }) {
           </div>
         )}
 
-        {/* Media Grid */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -100,17 +108,29 @@ export default function GalleryPage({ lang }: { lang: Lang }) {
                       </div>
                     </motion.div>
                   ) : (
-                    <div className="relative overflow-hidden rounded-2xl bg-white/5 border border-sage/20">
-                      <div className="aspect-video">
-                        <iframe
-                          src={entry.embedUrl}
-                          title={entry.name}
-                          className="w-full h-full"
-                          allow="autoplay; encrypted-media"
-                          allowFullScreen
-                        />
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      onClick={() => setSelectedVideo(entry.embedUrl!)}
+                      className="relative group overflow-hidden rounded-2xl bg-white/5 border border-sage/20 cursor-pointer"
+                    >
+                      <img
+                        src={`https://drive.google.com/thumbnail?id=${driveFileId(entry.embedUrl!)}&sz=w800`}
+                        alt={entry.name}
+                        className="w-full h-auto object-cover transition-all duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-16 h-16 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center group-hover:bg-black/70 transition-colors">
+                          <svg
+                            className="w-7 h-7 text-white ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
                       </div>
-                    </div>
+                    </motion.div>
                   )}
                 </RevealItem>
               ))}
@@ -119,7 +139,7 @@ export default function GalleryPage({ lang }: { lang: Lang }) {
         </AnimatePresence>
       </div>
 
-      {/* Fullscreen Modal */}
+      {/* Fullscreen Image Modal */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div
@@ -149,6 +169,46 @@ export default function GalleryPage({ lang }: { lang: Lang }) {
               className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Fullscreen Video Modal */}
+      <AnimatePresence>
+        {selectedVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedVideo(null)}
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
+          >
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedVideo(null);
+              }}
+              className="absolute top-6 right-6 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-[110] cursor-pointer"
+            >
+              <X className="w-8 h-8" />
+            </motion.button>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-4xl aspect-video"
+            >
+              <iframe
+                src={selectedVideo}
+                title="Video"
+                className="w-full h-full rounded-lg border-0"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+              />
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

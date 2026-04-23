@@ -27,6 +27,83 @@
     }
   ],
   "galeria": {
+    "Fotos": [
+      {
+        "type": "image",
+        "name": "5da510e3-f8c4-4b1b-a3cc-6f73116c92d3.JPG",
+        "path": "/drive/Galeria/Fotos/5da510e3-f8c4-4b1b-a3cc-6f73116c92d3.webp"
+      },
+      {
+        "type": "image",
+        "name": "5f6714b7-bb10-493b-ae9a-88dcfe5777c1.JPG",
+        "path": "/drive/Galeria/Fotos/5f6714b7-bb10-493b-ae9a-88dcfe5777c1.webp"
+      },
+      {
+        "type": "image",
+        "name": "96fdad2c-fc3d-4136-8964-b71ebb373de8.JPG",
+        "path": "/drive/Galeria/Fotos/96fdad2c-fc3d-4136-8964-b71ebb373de8.webp"
+      },
+      {
+        "type": "image",
+        "name": "20b6b567-c99c-4a5a-8ec3-f607bda579e5.JPG",
+        "path": "/drive/Galeria/Fotos/20b6b567-c99c-4a5a-8ec3-f607bda579e5.webp"
+      },
+      {
+        "type": "image",
+        "name": "27BA3AE1-5EFF-4518-BF76-DD3514E08290.HEIC",
+        "path": "/drive/Galeria/Fotos/27BA3AE1-5EFF-4518-BF76-DD3514E08290.webp"
+      },
+      {
+        "type": "image",
+        "name": "C26D3AFC-5AC9-4153-8C97-47EAB5F3B06E.HEIC",
+        "path": "/drive/Galeria/Fotos/C26D3AFC-5AC9-4153-8C97-47EAB5F3B06E.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.04.jpeg",
+        "path": "/drive/Galeria/Fotos/WhatsApp_Image_2026-03-10_at_20.41.04.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.04 (2).jpeg",
+        "path": "/drive/Galeria/Fotos/WhatsApp_Image_2026-03-10_at_20.41.04__2_.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.04 (1).jpeg",
+        "path": "/drive/Galeria/Fotos/WhatsApp_Image_2026-03-10_at_20.41.04__1_.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.03.jpeg",
+        "path": "/drive/Galeria/Fotos/WhatsApp_Image_2026-03-10_at_20.41.03.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.03 (2).jpeg",
+        "path": "/drive/Galeria/Fotos/WhatsApp_Image_2026-03-10_at_20.41.03__2_.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.41.03 (1).jpeg",
+        "path": "/drive/Galeria/Fotos/WhatsApp_Image_2026-03-10_at_20.41.03__1_.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.38.59.jpeg",
+        "path": "/drive/Galeria/Fotos/WhatsApp_Image_2026-03-10_at_20.38.59.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.36.47.jpeg",
+        "path": "/drive/Galeria/Fotos/WhatsApp_Image_2026-03-10_at_20.36.47.webp"
+      },
+      {
+        "type": "image",
+        "name": "WhatsApp Image 2026-03-10 at 20.35.49.jpeg",
+        "path": "/drive/Galeria/Fotos/WhatsApp_Image_2026-03-10_at_20.35.49.webp"
+      }
+    ],
     "Videos": [
       {
         "type": "video",
@@ -52,83 +129,6 @@
         "type": "video",
         "name": "IMG_1582.mov",
         "embedUrl": "https://drive.google.com/file/d/1hP6KdyTrubTU-6UHYLKuZflcODawcaly/preview"
-      }
-    ],
-    "Categoria 1": [
-      {
-        "type": "image",
-        "name": "5da510e3-f8c4-4b1b-a3cc-6f73116c92d3.JPG",
-        "path": "/drive/Galeria/Categoria_1/5da510e3-f8c4-4b1b-a3cc-6f73116c92d3.webp"
-      },
-      {
-        "type": "image",
-        "name": "5f6714b7-bb10-493b-ae9a-88dcfe5777c1.JPG",
-        "path": "/drive/Galeria/Categoria_1/5f6714b7-bb10-493b-ae9a-88dcfe5777c1.webp"
-      },
-      {
-        "type": "image",
-        "name": "96fdad2c-fc3d-4136-8964-b71ebb373de8.JPG",
-        "path": "/drive/Galeria/Categoria_1/96fdad2c-fc3d-4136-8964-b71ebb373de8.webp"
-      },
-      {
-        "type": "image",
-        "name": "20b6b567-c99c-4a5a-8ec3-f607bda579e5.JPG",
-        "path": "/drive/Galeria/Categoria_1/20b6b567-c99c-4a5a-8ec3-f607bda579e5.webp"
-      },
-      {
-        "type": "image",
-        "name": "27BA3AE1-5EFF-4518-BF76-DD3514E08290.HEIC",
-        "path": "/drive/Galeria/Categoria_1/27BA3AE1-5EFF-4518-BF76-DD3514E08290.webp"
-      },
-      {
-        "type": "image",
-        "name": "C26D3AFC-5AC9-4153-8C97-47EAB5F3B06E.HEIC",
-        "path": "/drive/Galeria/Categoria_1/C26D3AFC-5AC9-4153-8C97-47EAB5F3B06E.webp"
-      },
-      {
-        "type": "image",
-        "name": "WhatsApp Image 2026-03-10 at 20.41.04.jpeg",
-        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.04.webp"
-      },
-      {
-        "type": "image",
-        "name": "WhatsApp Image 2026-03-10 at 20.41.04 (2).jpeg",
-        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.04__2_.webp"
-      },
-      {
-        "type": "image",
-        "name": "WhatsApp Image 2026-03-10 at 20.41.04 (1).jpeg",
-        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.04__1_.webp"
-      },
-      {
-        "type": "image",
-        "name": "WhatsApp Image 2026-03-10 at 20.41.03.jpeg",
-        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.03.webp"
-      },
-      {
-        "type": "image",
-        "name": "WhatsApp Image 2026-03-10 at 20.41.03 (2).jpeg",
-        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.03__2_.webp"
-      },
-      {
-        "type": "image",
-        "name": "WhatsApp Image 2026-03-10 at 20.41.03 (1).jpeg",
-        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.41.03__1_.webp"
-      },
-      {
-        "type": "image",
-        "name": "WhatsApp Image 2026-03-10 at 20.38.59.jpeg",
-        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.38.59.webp"
-      },
-      {
-        "type": "image",
-        "name": "WhatsApp Image 2026-03-10 at 20.36.47.jpeg",
-        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.36.47.webp"
-      },
-      {
-        "type": "image",
-        "name": "WhatsApp Image 2026-03-10 at 20.35.49.jpeg",
-        "path": "/drive/Galeria/Categoria_1/WhatsApp_Image_2026-03-10_at_20.35.49.webp"
       }
     ]
   },

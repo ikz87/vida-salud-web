@@ -78,9 +78,9 @@ function App() {
               whileTap={{ scale: 0.95 }}
               onClick={() => setLang(targetLang)}
               className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border-2 transition-all cursor-pointer ${isGallery
-                ? "border-white/20 bg-white/10  hover:bg-white/20"
-                : "border-steel/30 bg-steel-bg hover:bg-mist-bg"
-                }`}
+? "border-white/20 bg-white/10 text-white hover:bg-white/20"
+: "border-steel/30 bg-steel-bg text-ink hover:bg-mist-bg"
+}`}
             >
               {c.nav.toggle}
               <img
@@ -132,7 +132,7 @@ function App() {
                   onClick={() => setMenuOpen(false)}
                   className={`p-2 rounded-full transition-colors ${isGallery
                     ? "hover:bg-white/10 text-white"
-                    : "hover:bg-black/5 text-ink"
+                    : "hover:bg-black/5 text-logo-blue-text"
                     }`}
                 >
                   <X className="w-5 h-5" />
@@ -162,7 +162,7 @@ function App() {
                           onClick={() => setMenuOpen(false)}
                           className={`group flex items-center justify-between px-4 py-3.5 rounded-2xl font-semibold text-sm transition-all ${isGallery
                             ? "text-white/80 hover:bg-white/10 hover:text-white"
-                            : "text-ink hover:bg-sage/10 hover:text-ink-light"
+                            : "text-logo-blue-text hover:bg-sage/10 hover:text-logo-blue-text/80"
                             }`}
                         >
                           {item.label}
