@@ -20,7 +20,7 @@ export default function StatisticsPage({ lang }: { lang: Lang }) {
       <RevealGroup>
         <div className="mb-12">
           <RevealItem>
-            <p className="text-xl text-ink-muted leading-relaxed text-center max-w-2xl mx-auto">
+            <p className="text-xl text-ink leading-relaxed text-center max-w-2xl mx-auto">
               {c.statistics.text}
             </p>
           </RevealItem>
@@ -31,15 +31,15 @@ export default function StatisticsPage({ lang }: { lang: Lang }) {
             const Icon = stat.icon;
             return (
               <RevealItem key={i}>
-                <div className="group p-8 rounded-3xl bg-white border border-steel/20 shadow-lg shadow-steel/5 hover:bg-steel hover:border-steel transition-colors duration-500 flex flex-col items-center justify-center text-center gap-4 h-full">
-                  <div className="p-4 bg-steel-bg rounded-full text-steel group-hover:bg-white/20 group-hover:text-white transition-colors duration-500">
+                <div className="group p-8 rounded-3xl bg-white border-2 border-logo-blue-text shadow-lg shadow-steel/5 transition-all duration-300 flex flex-col items-center justify-center text-center gap-4 h-full">
+                  <div className="p-4 bg-white border-2 border-logo-blue-text rounded-full text-ink transition-colors duration-500">
                     <Icon size={32} />
                   </div>
                   <div>
-                    <h3 className="font-heading font-900 text-5xl text-ink group-hover:text-white transition-colors duration-500 mb-2">
+                    <h3 className="font-heading font-900 text-5xl text-ink transition-colors duration-500 mb-2">
                       {stat.value}
                     </h3>
-                    <p className="text-steel font-bold uppercase tracking-widest text-sm group-hover:text-steel-bg transition-colors duration-500">
+                    <p className="text-ink font-bold uppercase tracking-widest text-sm transition-colors duration-500">
                       {stat.label}
                     </p>
                   </div>

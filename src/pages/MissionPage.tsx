@@ -19,8 +19,8 @@ export default function MissionPage({ lang }: { lang: Lang }) {
           {paragraphs.length > 0 && (
             <RevealItem>
               <div className="text-center space-y-6">
-                <div className="inline-flex p-4 rounded-2xl bg-sage-bg/60 border border-sage/10">
-                  <Heart className="w-8 h-8 text-sage" />
+                <div className="inline-flex p-4 rounded-2xl bg-white border-2 border-logo-blue-text">
+                  <Heart className="w-8 h-8 text-ink" />
                 </div>
                 <p className=" text-left text-xl sm:text-2xl text-ink leading-relaxed font-medium max-w-2xl mx-auto">
                   {paragraphs[0]}
@@ -33,35 +33,18 @@ export default function MissionPage({ lang }: { lang: Lang }) {
           {paragraphs.length > 1 && (
             <div className="relative">
               {/* Vertical line */}
-              <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-px bg-stone/20 hidden sm:block" />
+              <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-px bg-black/20 hidden sm:block" />
 
               <div className="space-y-10">
                 {paragraphs.slice(1).map((paragraph, i) => {
                   const Icon =
                     sectionIcons[(i + 1) % sectionIcons.length];
-                  const colors = [
-                    {
-                      ring: "ring-sage/20",
-                      bg: "bg-sage-bg",
-                      text: "text-sage",
-                    },
-                    {
-                      ring: "ring-steel/20",
-                      bg: "bg-steel-bg",
-                      text: "text-steel",
-                    },
-                    {
-                      ring: "ring-pastel-mint/20",
-                      bg: "bg-pastel-mint-bg",
-                      text: "text-pastel-mint",
-                    },
-                    {
-                      ring: "ring-pastel-amber/20",
-                      bg: "bg-pastel-amber-bg",
-                      text: "text-pastel-amber",
-                    },
-                  ];
-                  const color = colors[i % colors.length];
+                  const color = {
+                    ring: "ring-black/5",
+                    bg: "bg-white",
+                    text: "text-ink",
+                    border: "border-2 border-logo-blue-text",
+                  };
 
                   return (
                     <RevealItem key={i}>
@@ -71,14 +54,14 @@ export default function MissionPage({ lang }: { lang: Lang }) {
                       >
                         {/* Number badge */}
                         <div
-                          className={`flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-2xl ${color.bg} ring-2 ${color.ring} flex items-center justify-center relative z-10`}
+                          className={`flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-2xl ${color.bg} ${color.border} flex items-center justify-center relative z-10`}
                         >
                           <Icon
                             className={`w-5 h-5 sm:w-6 sm:h-6 ${color.text}`}
                           />
                         </div>
                         <div className="pt-1 sm:pt-3">
-                          <p className="text-lg text-ink-muted leading-relaxed">
+                          <p className="text-lg text-ink leading-relaxed">
                             {paragraph}
                           </p>
                         </div>

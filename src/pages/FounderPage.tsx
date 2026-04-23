@@ -2,7 +2,7 @@
 import { content, type Lang } from "../content";
 import PageLayout from "../components/PageLayout";
 import { RevealGroup, RevealItem } from "../components/Reveal";
-import { Quote, User } from "lucide-react";
+import { Quote } from "lucide-react";
 
 export default function FounderPage({ lang }: { lang: Lang }) {
   const c = content[lang];
@@ -14,7 +14,7 @@ export default function FounderPage({ lang }: { lang: Lang }) {
             <RevealItem className="w-full md:w-1/3 flex justify-center shrink-0">
               <div className="relative group">
                 <div className="absolute -inset-4 bg-steel/20 rounded-full blur-2xl group-hover:bg-steel/30 transition-colors duration-700" />
-                <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full border-white overflow-hidden bg-steel-bg flex items-center justify-center">
+                <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full border-2 border-logo-blue-text overflow-hidden bg-white flex items-center justify-center">
                   <img src="/images/ariana.jpeg" alt="Founder" className="w-full h-full object-cover" />
                 </div>
               </div>
@@ -38,7 +38,7 @@ export default function FounderPage({ lang }: { lang: Lang }) {
           <section className="space-y-8 relative">
             <RevealItem>
               <div className="flex items-center gap-4 mb-2">
-                <div className="p-3 bg-steel-bg rounded-2xl text-steel">
+                <div className="p-3 bg-white border-2 border-logo-blue-text rounded-2xl text-ink">
                   <Quote size={24} fill="currentColor" className="opacity-40" />
                 </div>
                 <h2 className="text-3xl sm:text-4xl font-heading font-800 text-ink tracking-tight">
@@ -47,10 +47,10 @@ export default function FounderPage({ lang }: { lang: Lang }) {
               </div>
             </RevealItem>
 
-            <div className="grid gap-6 bg-steel-bg/30 p-8 sm:p-10 rounded-3xl border border-steel/10">
+            <div className="grid gap-6 bg-white p-8 sm:p-10 rounded-3xl border-2 border-logo-blue-text">
               {c.founder.message.split("\n\n").map((paragraph, i) => (
                 <RevealItem key={i}>
-                  <p className="text-lg text-ink-muted leading-relaxed">
+                  <p className="text-lg text-ink leading-relaxed">
                     {paragraph}
                   </p>
                 </RevealItem>

@@ -18,7 +18,7 @@ export default function VolunteersPage({ lang }: { lang: Lang }) {
             <RevealItem key={i} className="break-inside-avoid">
               <div
                 onClick={() => setSelected(img.path)}
-                className="relative group overflow-hidden rounded-2xl bg-steel-bg/30 border border-steel/10 cursor-pointer"
+                className="relative group overflow-hidden rounded-2xl bg-white border-2 border-logo-blue-text cursor-pointer"
               >
                 <img
                   src={img.path}

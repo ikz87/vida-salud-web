@@ -20,7 +20,7 @@ export default function PageLayout({ children, title }: PageLayoutProps) {
                     {title}
                 </h1>
             </header>
-            <div className="bg-white/50 backdrop-blur-sm rounded-3xl p-8 sm:p-12 border border-warm-stone/30 shadow-xl shadow-forest/5">
+            <div className="bg-logo-green-bg backdrop-blur-sm rounded-3xl p-8 sm:p-12 border-2 border-logo-blue-text shadow-xl shadow-forest/5">
                 {children}
             </div>
         </motion.main>

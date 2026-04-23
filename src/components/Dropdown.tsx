@@ -70,7 +70,7 @@ export default function Dropdown({ title, items, isGallery }: DropdownProps) {
                 }}
                 className={`flex items-center gap-1 transition-colors cursor-pointer py-2 ${isGallery
                         ? "text-white/70 hover:text-white"
-                        : "text-ink-muted hover:text-ink"
+                        : "text-logo-blue-text/80 hover:text-logo-blue-text"
                     } font-medium text-sm`}
             >
                 {title}
