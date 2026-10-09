@@ -73,6 +73,13 @@ export const sessionIcons: Record<number, LucideIcon> = {
 
 export const structureIcons = [Users, Hash, Clock, Presentation, BarChart3];
 
+export const statisticsYears = [
+  { year: 2023, children: 69, volunteers: 3 },
+  { year: 2024, children: 116, volunteers: 8 },
+  { year: 2025, children: 130, volunteers: 12 },
+  { year: 2026, children: 178, volunteers: 20 },
+];
+
 export const flagUrls: Record<Lang, string> = {
   es: "https://cdn-icons-png.flaticon.com/512/197/197593.png",
   en: "https://cdn-icons-png.flaticon.com/512/197/197374.png",

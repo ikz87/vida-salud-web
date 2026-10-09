@@ -35,7 +35,9 @@ export interface Content {
   };
   statistics: {
     heading: string;
-    text: string;
+    intro: string;
+    chartChildrenTitle: string;
+    chartVolunteersTitle: string;
   };
   testimonies: {
     heading: string;
@@ -135,7 +137,10 @@ export const content: Record<Lang, Content> = {
     },
     statistics: {
       heading: "Statistics",
-      text: "TODO: Content about program impact statistics.",
+      intro:
+        "Our impact has grown year after year. Here is a look at the children we have reached and the volunteers who make it possible.",
+      chartChildrenTitle: "Children reached over time",
+      chartVolunteersTitle: "Volunteers over time",
     },
     testimonies: {
       heading: "Testimonies",
@@ -388,7 +393,10 @@ export const content: Record<Lang, Content> = {
     },
     statistics: {
       heading: "Estadísticas",
-      text: "TODO: Contenido sobre estadísticas de impacto del programa.",
+      intro:
+        "Nuestro impacto ha crecido año tras año. Aquí mostramos los niños alcanzados y los voluntarios que lo hacen posible.",
+      chartChildrenTitle: "Niños beneficiados a lo largo del tiempo",
+      chartVolunteersTitle: "Voluntarios a lo largo del tiempo",
     },
     testimonies: {
       heading: "Testimonios",
